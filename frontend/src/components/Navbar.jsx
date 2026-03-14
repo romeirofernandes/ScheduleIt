@@ -34,6 +34,11 @@ export default function Navbar() {
 
   const isDark = mounted && resolvedTheme === 'dark';
 
+  const handleBrandClick = (event) => {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6">
       <div className={cn('mx-auto transition-all duration-300 ease-out', scrolled ? 'max-w-5xl' : 'max-w-6xl')}>
@@ -48,7 +53,7 @@ export default function Navbar() {
           className="transition-all duration-300 ease-out"
         >
           <div className="flex h-full items-center justify-between px-4 sm:px-6">
-            <a href="/" className="flex items-center gap-2">
+            <a href="#" onClick={handleBrandClick} className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary shadow-sm shadow-primary/30">
                 <HugeiconsIcon icon={Calendar01Icon} size={15} strokeWidth={1.8} className="text-primary-foreground" />
               </div>
