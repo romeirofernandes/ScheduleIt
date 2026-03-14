@@ -8,15 +8,16 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
+import { ArrowDown01Icon, ArrowLeft01Icon, ArrowRight01Icon } from '@hugeicons/core-free-icons';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { cn } from '@/lib/utils';
 import { getDay, getDaysInMonth, isSameDay, isToday as isTodayFn } from 'date-fns';
-import { ChevronLeftIcon, ChevronRightIcon, ChevronsUpDown } from 'lucide-react';
-import { createContext, useContext, useState } from 'react';
+import { Fragment, createContext, useContext, useState } from 'react';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
@@ -71,7 +72,7 @@ const Combobox = ({ value, setValue, data, labels, className }) => {
         )}
       >
         {value ? data.find((item) => item.value === value)?.label : labels.button}
-        <ChevronsUpDown className="ml-1 h-3.5 w-3.5 shrink-0 opacity-50" />
+        <HugeiconsIcon icon={ArrowDown01Icon} size={14} strokeWidth={1.8} className="ml-1 shrink-0 opacity-50" />
       </PopoverTrigger>
       <PopoverContent className="w-36 p-0">
         <Command
@@ -164,7 +165,9 @@ export const CalendarBody = ({ features, children }) => {
 
         {/* Events */}
         <div className="flex flex-col gap-0.5">
-          {featuresForDay.slice(0, 3).map((feature) => children({ feature }))}
+          {featuresForDay.slice(0, 3).map((feature) => (
+            <Fragment key={feature.id}>{children({ feature })}</Fragment>
+          ))}
         </div>
 
         {featuresForDay.length > 3 && (
@@ -260,13 +263,13 @@ export const CalendarDatePagination = ({ className }) => {
         onClick={handlePrev}
         className="inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
       >
-        <ChevronLeftIcon size={14} />
+        <HugeiconsIcon icon={ArrowLeft01Icon} size={14} strokeWidth={1.8} />
       </button>
       <button
         onClick={handleNext}
         className="inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
       >
-        <ChevronRightIcon size={14} />
+        <HugeiconsIcon icon={ArrowRight01Icon} size={14} strokeWidth={1.8} />
       </button>
     </div>
   );
