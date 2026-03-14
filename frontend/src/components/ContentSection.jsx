@@ -16,10 +16,10 @@ import { cn } from '@/lib/utils';
 function ScheduleIllustration({ className }) {
   return (
     <div className={cn('relative', className)}>
-      <div className="absolute -top-14 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-xl border border-border bg-card p-1.5 shadow-lg">
+      <div className="absolute -top-14 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-xl border border-border bg-card p-1.5 shadow-lg max-sm:static max-sm:mb-3 max-sm:w-full max-sm:translate-x-0 max-sm:transform-none max-sm:flex-wrap max-sm:justify-center">
         <Button size="sm" className="rounded-md">
           <HugeiconsIcon icon={Calendar01Icon} size={14} strokeWidth={1.8} />
-          <span className="text-xs font-medium">Schedule</span>
+          <span className="text-xs font-medium max-sm:hidden">Schedule</span>
         </Button>
         <span className="h-5 w-px bg-border" />
         <div className="flex gap-1">
@@ -53,11 +53,11 @@ function ScheduleIllustration({ className }) {
 function CodeIllustration({ className }) {
   return (
     <div className={cn('relative flex h-full items-center justify-center', className)}>
-      <ul className="font-mono text-2xl font-semibold leading-10 text-muted-foreground">
+      <ul className="font-mono text-xl font-semibold leading-8 text-muted-foreground sm:text-2xl sm:leading-10">
         {['Resources', 'Requests', 'Approvals', 'Conflicts', 'Reports'].map((item, index) => (
           <li key={item} className={cn(index === 2 && 'relative text-foreground')}>
             {index === 2 && (
-              <span className="absolute -left-16 text-sm font-medium uppercase tracking-wide text-primary">
+              <span className="absolute -left-12 text-xs font-medium uppercase tracking-wide text-primary sm:-left-16 sm:text-sm">
                 Sync
               </span>
             )}
@@ -72,10 +72,10 @@ function CodeIllustration({ className }) {
 export default function ContentSection() {
   return (
     <section id="how-it-works" className="py-24">
-      <div className="mx-auto w-full max-w-6xl">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-0">
         <div className="max-w-3xl">
           <span className="text-sm font-medium text-primary">Smart workflow</span>
-          <h2 className="mt-4 text-balance text-4xl font-semibold tracking-tight text-foreground">
+          <h2 className="mt-4 text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Edit, schedule, and approve from one shared workspace
           </h2>
           <p className="mb-12 mt-4 text-lg leading-relaxed text-foreground/80">
@@ -108,7 +108,7 @@ export default function ContentSection() {
               </p>
             </div>
             <div className="row-start-1 flex items-center justify-center sm:col-span-2 sm:row-start-auto">
-              <ScheduleIllustration className="pt-10" />
+              <ScheduleIllustration className="pt-8 sm:pt-10" />
             </div>
           </div>
         </div>

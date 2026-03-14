@@ -87,14 +87,14 @@ function FeatureCard({ title, description, icon, className, children }) {
 
 export default function FeaturesSection() {
   return (
-    <section id="features" className="py-24 pb-0">
-      <div className="mx-auto w-full max-w-6xl">
-        <div className="mb-12 max-w-2xl">
+    <section id="features" className="py-16 pb-0 sm:py-24">
+      <div className="mx-auto w-full max-w-6xl px-6">
+        <div className="mb-10 max-w-2xl sm:mb-12">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Features</p>
-          <h2 className="mt-3 text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="mt-3 text-balance text-2xl font-semibold tracking-tight text-foreground sm:text-4xl">
             A booking stack built for real campus operations
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-foreground/80">
+          <p className="mt-4 text-sm leading-relaxed text-foreground/80 sm:text-base">
             ScheduleIt keeps availability, approvals, and reporting in one place so teams can
             run labs, rooms, and equipment without scheduling chaos.
           </p>

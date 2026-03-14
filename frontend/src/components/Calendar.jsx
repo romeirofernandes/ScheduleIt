@@ -67,7 +67,7 @@ const Combobox = ({ value, setValue, data, labels, className }) => {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
         className={cn(
-          'inline-flex h-8 w-36 cursor-pointer items-center justify-between rounded-md border border-border bg-background px-3 py-1.5 text-sm capitalize text-foreground transition-colors hover:bg-muted',
+          'inline-flex h-8 w-28 cursor-pointer items-center justify-between rounded-md border border-border bg-background px-2.5 py-1.5 text-xs capitalize text-foreground transition-colors hover:bg-muted sm:w-36 sm:px-3 sm:text-sm',
           className
         )}
       >
@@ -108,7 +108,7 @@ const Combobox = ({ value, setValue, data, labels, className }) => {
 };
 
 const OutOfBoundsDay = ({ day }) => (
-  <div className="relative h-full w-full bg-muted p-2 text-xs text-muted-foreground select-none">
+  <div className="relative h-full w-full select-none bg-muted p-1.5 text-[10px] text-muted-foreground sm:p-2 sm:text-xs">
     {day}
   </div>
 );
@@ -145,7 +145,7 @@ export const CalendarBody = ({ features, children }) => {
         key={day}
         onClick={() => setSelectedDay(isSelected ? null : day)}
         className={cn(
-          'group relative flex h-full w-full cursor-pointer flex-col gap-1 bg-card p-2 text-xs transition-colors',
+          'group relative flex h-full w-full cursor-pointer flex-col gap-1 bg-card p-1.5 text-[10px] transition-colors sm:p-2 sm:text-xs',
           'hover:bg-accent',
           isSelected && !isToday && 'bg-accent',
           isWeekend && !isSelected && 'bg-muted',
@@ -154,7 +154,7 @@ export const CalendarBody = ({ features, children }) => {
         {/* Day number */}
         <span
           className={cn(
-            'flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-medium transition-colors',
+            'flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[10px] font-medium transition-colors sm:h-5 sm:w-5 sm:text-[11px]',
             isToday && 'bg-primary text-primary-foreground font-semibold',
             isSelected && !isToday && 'bg-muted font-semibold text-foreground',
             !isToday && !isSelected && 'text-muted-foreground group-hover:text-foreground',
@@ -171,7 +171,7 @@ export const CalendarBody = ({ features, children }) => {
         </div>
 
         {featuresForDay.length > 3 && (
-          <span className="text-[9px] font-medium text-muted-foreground">
+          <span className="text-[8px] font-medium text-muted-foreground sm:text-[9px]">
             +{featuresForDay.length - 3} more
           </span>
         )}
@@ -199,7 +199,7 @@ export const CalendarBody = ({ features, children }) => {
         <div
           key={index}
           className={cn(
-            'relative min-h-28 overflow-hidden border-t border-r border-border',
+            'relative min-h-20 overflow-hidden border-t border-r border-border sm:min-h-28',
             index % 7 === 6 && 'border-r-0'
           )}
         >
@@ -211,7 +211,7 @@ export const CalendarBody = ({ features, children }) => {
 };
 
 export const CalendarDatePicker = ({ className, children }) => (
-  <div className={cn('flex items-center gap-1', className)}>{children}</div>
+  <div className={cn('flex flex-wrap items-center gap-1', className)}>{children}</div>
 );
 
 export const CalendarMonthPicker = ({ className }) => {
@@ -276,7 +276,7 @@ export const CalendarDatePagination = ({ className }) => {
 };
 
 export const CalendarDate = ({ children }) => (
-  <div className="flex items-center justify-between border-b border-border bg-muted px-4 py-3">{children}</div>
+  <div className="flex flex-col items-start justify-between gap-2 border-b border-border bg-muted px-3 py-3 sm:flex-row sm:items-center sm:px-4">{children}</div>
 );
 
 export const CalendarHeader = ({ className }) => {
@@ -286,7 +286,7 @@ export const CalendarHeader = ({ className }) => {
       {daysForLocale(locale, startDay).map((day) => (
         <div
           key={day}
-          className="px-2 py-2 text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground"
+          className="px-1 py-2 text-center text-[9px] font-semibold uppercase tracking-wider text-muted-foreground sm:px-2 sm:text-[10px]"
         >
           {day}
         </div>
@@ -298,7 +298,7 @@ export const CalendarHeader = ({ className }) => {
 export const CalendarItem = ({ feature, className }) => (
   <div
     key={feature.id}
-    className={cn('flex items-center gap-1.5 rounded border px-1.5 py-0.5 text-[10px] font-medium leading-[1.4] text-foreground', className)}
+    className={cn('flex items-center gap-1 rounded border px-1 py-0.5 text-[9px] font-medium leading-[1.35] text-foreground sm:gap-1.5 sm:px-1.5 sm:text-[10px]', className)}
     style={{
       backgroundColor: hexToRgba(feature.status.color, 0.16),
       borderColor: hexToRgba(feature.status.color, 0.36),
