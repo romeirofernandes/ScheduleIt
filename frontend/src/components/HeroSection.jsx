@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import GlassSurface from '@/components/GlassSurface';
+import Navbar from '@/components/Navbar';
 import {
   CalendarBody,
   CalendarDate,
@@ -14,12 +14,8 @@ import {
   CalendarProvider,
   CalendarYearPicker,
 } from '@/components/Calendar';
-import { Calendar01Icon, Moon02Icon, Sun03Icon } from '@hugeicons/core-free-icons';
-import { HugeiconsIcon } from '@hugeicons/react';
 import { motion } from 'motion/react';
-import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
-import { cn } from '@/lib/utils';
+ 
 
 const STATUSES = [
   { id: 's1', name: 'Confirmed', color: '#22c55e' },
@@ -78,94 +74,10 @@ const headingLine = {
   },
 };
 
-function ThemeToggle() {
-  const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-
-  if (!mounted) return <div className="h-9 w-9" />;
-
-  return (
-    <button
-      onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-md text-foreground/70 transition-colors hover:bg-foreground/8 hover:text-foreground"
-      aria-label="Toggle theme"
-    >
-      {resolvedTheme === 'dark' ? (
-        <HugeiconsIcon icon={Sun03Icon} size={16} strokeWidth={1.8} />
-      ) : (
-        <HugeiconsIcon icon={Moon02Icon} size={16} strokeWidth={1.8} />
-      )}
-    </button>
-  );
-}
-
-function NavLink({ href = '#', children }) {
-  return (
-    <a
-      href={href}
-      className="text-sm font-medium text-foreground/65 transition-colors hover:text-foreground"
-    >
-      {children}
-    </a>
-  );
-}
-
 export default function HeroSection() {
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => setMounted(true), []);
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  const isDark = mounted && resolvedTheme === 'dark';
-
-  const navInner = (
-    <div className="flex h-full items-center justify-between px-4 sm:px-6">
-      <a href="/" className="flex items-center gap-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary shadow-sm shadow-primary/30">
-          <HugeiconsIcon icon={Calendar01Icon} size={15} strokeWidth={1.8} className="text-primary-foreground" />
-        </div>
-        <span className="text-base font-semibold tracking-tight text-foreground">ScheduleIt</span>
-      </a>
-
-      <nav className="hidden items-center gap-7 md:flex">
-        <NavLink href="#features">Features</NavLink>
-        <NavLink href="#how-it-works">How It Works</NavLink>
-      </nav>
-
-      <div className="flex items-center gap-2">
-        <ThemeToggle />
-        <Button variant="secondary" size="sm">Sign In</Button>
-        <Button size="sm" className="hidden sm:inline-flex">Get Started</Button>
-      </div>
-    </div>
-  );
-
   return (
     <section className="relative flex min-h-svh flex-col overflow-hidden">
-      <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6">
-        <div className={cn('mx-auto transition-all duration-300 ease-out', scrolled ? 'max-w-5xl' : 'max-w-6xl')}>
-          <GlassSurface
-            active={scrolled}
-            height={60}
-            borderRadius={18}
-            backgroundOpacity={scrolled ? (isDark ? 0.2 : 0.52) : 0}
-            blur={scrolled ? 14 : 0}
-            saturation={1.2}
-            isDark={isDark}
-            className="transition-all duration-300 ease-out"
-          >
-            {navInner}
-          </GlassSurface>
-        </div>
-      </header>
+      <Navbar />
 
       {/* Hero content */}
       <main className="relative z-10 flex flex-1 flex-col px-6 pt-32 pb-12 lg:pt-36 lg:pb-16">

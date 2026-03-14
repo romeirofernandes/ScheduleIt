@@ -22,8 +22,8 @@ export default function LandingBackground() {
           warpStrength={0.85}
           warpFrequency={4.2}
           warpSpeed={2}
-          warpAmplitude={52.0}
-          rotationAmount={350.0}
+          warpAmplitude={50.0}
+          rotationAmount={150}
           contrast={1.05}
           saturation={0.72}
           grainAmount={0.1}

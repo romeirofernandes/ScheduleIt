@@ -84,8 +84,7 @@ export default function ContentSection() {
           </p>
         </div>
 
-          <div className="rounded-[30px] border border-border/60 bg-background/30 p-[12px] shadow-2xl backdrop-blur-xl">
-            <div className="space-y-10 rounded-[18px] border border-border bg-card/90 p-6 shadow-xl backdrop-blur-[2px] sm:space-y-0 sm:divide-y sm:p-10">
+        <div className="space-y-10 rounded-2xl border border-border bg-card p-6 shadow-sm sm:space-y-0 sm:divide-y sm:p-10">
           <div className="grid gap-8 sm:grid-cols-5 sm:gap-10">
             <CodeIllustration className="sm:col-span-2" />
             <div className="sm:col-span-3 sm:border-l sm:border-border sm:pl-10">
@@ -113,7 +112,6 @@ export default function ContentSection() {
             </div>
           </div>
         </div>
-      </div>
       </div>
     </section>
   );

@@ -87,7 +87,7 @@ function FeatureCard({ title, description, icon, className, children }) {
 
 export default function FeaturesSection() {
   return (
-    <section id="features" className="py-24">
+    <section id="features" className="py-24 pb-0">
       <div className="mx-auto w-full max-w-6xl">
         <div className="mb-12 max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Features</p>

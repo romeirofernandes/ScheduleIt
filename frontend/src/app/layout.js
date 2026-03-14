@@ -19,7 +19,7 @@ const fontMono = Fira_Code({
 });
 
 export const metadata = {
-  title: "ScheduleIt — Smart Booking for Campus Resources",
+  title: "ScheduleIt",
   description:
     "ScheduleIt is a centralized web platform that digitizes the booking of campus resources like labs, seminar halls, and equipment. Real-time availability, online booking, and admin approvals.",
 };
