@@ -6,7 +6,8 @@ import { useFormStatus } from "react-dom";
 
 import { loginAction } from "@/actions/auth/login-action";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { AtSignIcon, LockIcon } from "lucide-react";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 
 const initialAuthActionState = {
   error: "",
@@ -22,7 +23,7 @@ function SubmitButton() {
   );
 }
 
-export function LoginForm() {
+export function SigninForm() {
   const [state, formAction] = useActionState(
     loginAction,
     initialAuthActionState,
@@ -37,14 +38,19 @@ export function LoginForm() {
         >
           Username or Email
         </label>
-        <Input
-          id="identifier"
-          name="identifier"
-          type="text"
-          autoComplete="username"
-          placeholder="johndoe or john@example.com"
-          required
-        />
+        <InputGroup>
+          <InputGroupInput
+            id="identifier"
+            name="identifier"
+            type="text"
+            autoComplete="username"
+            placeholder="johndoe or john@example.com"
+            required
+          />
+          <InputGroupAddon align="inline-start">
+            <AtSignIcon className="h-4 w-4" />
+          </InputGroupAddon>
+        </InputGroup>
       </div>
 
       <div className="space-y-2">
@@ -54,14 +60,19 @@ export function LoginForm() {
         >
           Password
         </label>
-        <Input
-          id="password"
-          name="password"
-          type="password"
-          autoComplete="current-password"
-          placeholder="Enter your password"
-          required
-        />
+        <InputGroup>
+          <InputGroupInput
+            id="password"
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            placeholder="Enter your password"
+            required
+          />
+          <InputGroupAddon align="inline-start">
+            <LockIcon className="h-4 w-4" />
+          </InputGroupAddon>
+        </InputGroup>
       </div>
 
       {state.error ? (
@@ -75,7 +86,7 @@ export function LoginForm() {
       <p className="text-center text-sm text-muted-foreground">
         New here?{" "}
         <Link
-          href="/signin"
+          href="/signup"
           className="font-medium text-primary hover:underline"
         >
           Create an account

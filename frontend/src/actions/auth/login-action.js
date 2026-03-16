@@ -3,10 +3,10 @@
 import { AuthError } from "next-auth";
 
 import { signIn } from "@/auth";
-import { parseLoginForm } from "@/lib/validations/auth";
+import { parseSigninForm } from "@/lib/validations/auth";
 
 export async function loginAction(_prevState, formData) {
-  const parsed = parseLoginForm(formData);
+  const parsed = parseSigninForm(formData);
 
   if (!parsed.success) {
     return {

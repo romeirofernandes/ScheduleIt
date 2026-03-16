@@ -51,7 +51,7 @@ export default function MinimalFooter() {
                 </div>
                 <span className="text-base font-semibold tracking-tight text-foreground">ScheduleIt</span>
               </a>
-              <p className="max-w-sm text-balance font-mono text-sm text-muted-foreground">
+              <p className="max-w-sm text-balance text-sm text-muted-foreground">
                 ScheduleIt helps universities run booking operations across classrooms, labs, and equipment without
                 spreadsheet chaos.
               </p>

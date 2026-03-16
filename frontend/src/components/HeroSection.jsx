@@ -114,7 +114,15 @@ export default function HeroSection() {
             {/* CTA Buttons */}
             <div className="flex flex-wrap items-center gap-3 pt-1">
               <Button size="lg">Get Started Free</Button>
-              <Button variant="secondary" size="lg">Watch Demo</Button>
+              <Button 
+                variant="secondary" 
+                size="lg"
+                onClick={() => {
+                  document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                Learn More
+              </Button>
             </div>
           </div>
 

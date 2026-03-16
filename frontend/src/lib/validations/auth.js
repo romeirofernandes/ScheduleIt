@@ -19,7 +19,7 @@ export const signupSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters."),
 });
 
-export function parseLoginForm(formData) {
+export function parseSigninForm(formData) {
   return loginSchema.safeParse({
     identifier: formData.get("identifier"),
     password: formData.get("password"),

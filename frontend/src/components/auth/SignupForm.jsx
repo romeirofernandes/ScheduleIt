@@ -6,7 +6,17 @@ import { useFormStatus } from "react-dom";
 
 import { signupAction } from "@/actions/auth/signup-action";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import {
+  AtSignIcon,
+  LockIcon,
+  SmartphoneIcon,
+  UserIcon,
+} from "lucide-react";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 
 const initialSignupActionState = {
   error: "",
@@ -37,14 +47,19 @@ export function SignupForm() {
         >
           Username
         </label>
-        <Input
-          id="username"
-          name="username"
-          type="text"
-          autoComplete="username"
-          placeholder="johndoe"
-          required
-        />
+        <InputGroup>
+          <InputGroupInput
+            id="username"
+            name="username"
+            type="text"
+            autoComplete="username"
+            placeholder="johndoe"
+            required
+          />
+          <InputGroupAddon align="inline-start">
+            <UserIcon className="h-4 w-4" />
+          </InputGroupAddon>
+        </InputGroup>
       </div>
 
       <div className="space-y-2">
@@ -54,14 +69,19 @@ export function SignupForm() {
         >
           Email
         </label>
-        <Input
-          id="email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          placeholder="john@example.com"
-          required
-        />
+        <InputGroup>
+          <InputGroupInput
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            placeholder="john@example.com"
+            required
+          />
+          <InputGroupAddon align="inline-start">
+            <AtSignIcon className="h-4 w-4" />
+          </InputGroupAddon>
+        </InputGroup>
       </div>
 
       <div className="space-y-2">
@@ -71,14 +91,19 @@ export function SignupForm() {
         >
           Mobile Number
         </label>
-        <Input
-          id="mobNumber"
-          name="mobNumber"
-          type="tel"
-          autoComplete="tel"
-          placeholder="9876543210"
-          required
-        />
+        <InputGroup>
+          <InputGroupInput
+            id="mobNumber"
+            name="mobNumber"
+            type="tel"
+            autoComplete="tel"
+            placeholder="9876543210"
+            required
+          />
+          <InputGroupAddon align="inline-start">
+            <SmartphoneIcon className="h-4 w-4" />
+          </InputGroupAddon>
+        </InputGroup>
       </div>
 
       <div className="space-y-2">
@@ -88,14 +113,19 @@ export function SignupForm() {
         >
           Password
         </label>
-        <Input
-          id="password"
-          name="password"
-          type="password"
-          autoComplete="new-password"
-          placeholder="At least 6 characters"
-          required
-        />
+        <InputGroup>
+          <InputGroupInput
+            id="password"
+            name="password"
+            type="password"
+            autoComplete="new-password"
+            placeholder="At least 6 characters"
+            required
+          />
+          <InputGroupAddon align="inline-start">
+            <LockIcon className="h-4 w-4" />
+          </InputGroupAddon>
+        </InputGroup>
       </div>
 
       {state.error ? (
@@ -109,7 +139,7 @@ export function SignupForm() {
       <p className="text-center text-sm text-muted-foreground">
         Already have an account?{" "}
         <Link
-          href="/login"
+          href="/signin"
           className="font-medium text-primary hover:underline"
         >
           Login

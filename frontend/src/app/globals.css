@@ -46,7 +46,7 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
   --font-serif: Merriweather, serif;
-  --radius: 0.5rem;
+  --radius: 0.375rem;
   --tracking-tighter: calc(var(--tracking-normal) - 0.05em);
   --tracking-tight: calc(var(--tracking-normal) - 0.025em);
   --tracking-wide: calc(var(--tracking-normal) + 0.025em);
@@ -96,7 +96,7 @@
   --chart-3: oklch(0.5957 0.1807 19.9763);
   --chart-4: oklch(0.7859 0.1342 83.6986);
   --chart-5: oklch(0.4227 0.0732 267.3899);
-  --radius: 0.5rem;
+  --radius: 0.375rem;
   --sidebar: oklch(0.9030 0.0046 258.3257);
   --sidebar-foreground: oklch(0.3211 0 0);
   --sidebar-primary: oklch(0.6397 0.1720 36.4421);
@@ -161,7 +161,7 @@
   --sidebar-border: oklch(0.3290 0 0);
   --sidebar-ring: oklch(0.6397 0.1720 36.4421);
   --destructive-foreground: oklch(1.0000 0 0);
-  --radius: 0.5rem;
+  --radius: 0.375rem;
   --font-sans: Outfit, sans-serif;
   --font-serif: Merriweather, serif;
   --font-mono: Fira Code, monospace;
