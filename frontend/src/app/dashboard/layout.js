@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { logoutAction } from "@/actions/auth/logout-action";
 import {
@@ -13,12 +14,16 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTheme } from "next-themes";
 import { useTransition } from "react";
-import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 export default function DashboardLayout({ children }) {
+  const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
   const { resolvedTheme, setTheme } = useTheme();
+
+  if (pathname.startsWith("/dashboard/student") || pathname.startsWith("/dashboard/admin")) {
+    return children;
+  }
 
   const handleLogout = () => {
     startTransition(async () => {

@@ -3,6 +3,7 @@ import { Outfit, Merriweather, Fira_Code } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const fontSans = Outfit({
   subsets: ["latin"],
@@ -35,8 +36,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {children}
-          <Toaster position="top-center" richColors />
+          <TooltipProvider>
+            {children}
+            <Toaster position="top-center" richColors />
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
