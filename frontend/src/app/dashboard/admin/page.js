@@ -24,7 +24,7 @@ export default async function AdminDashboard() {
       <div className="max-w-7xl mx-auto px-4 py-8 md:px-8">
         <header className="mb-10 flex flex-col md:flex-row md:items-end justify-between items-start gap-4">
           <div>
-            <h1 className="text-4xl font-serif font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-br from-foreground to-foreground/70">
+            <h1 className="text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-br from-foreground to-foreground/70">
               Admin Dashboard
             </h1>
             <p className="text-muted-foreground mt-2 text-lg">
