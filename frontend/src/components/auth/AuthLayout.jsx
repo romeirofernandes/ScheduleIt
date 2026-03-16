@@ -8,15 +8,15 @@ import { Moon02Icon, Sun03Icon } from "@hugeicons/core-free-icons";
 
 import LandingBackground from "@/components/LandingBackground";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 function ThemeToggleBtn() {
   const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   if (!mounted) {
     return (

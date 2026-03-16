@@ -80,7 +80,7 @@ export default async function StudentDashboard() {
               No Lab Allocations Yet
             </h2>
             <p className="text-muted-foreground mt-2 text-center max-w-sm">
-              Your administrators haven't scheduled any lab sessions for your class yet. Check back later!
+              Your administrators haven&apos;t scheduled any lab sessions for your class yet. Check back later!
             </p>
           </div>
         ) : (

@@ -16,6 +16,20 @@ const ITEM_HEIGHT = 66;
 const ITEM_GAP = 8;
 const CONTAINER_SLOTS = 5;
 
+function buildInitialItems(templates, visibleCount) {
+  if (templates.length === 0) return [];
+
+  const count = Math.max(1, visibleCount);
+  return Array.from({ length: count }, (_, index) => {
+    const template = templates[index % templates.length];
+    const sequence = index + 1;
+    return {
+      ...template,
+      id: `${template.baseId}-${sequence}`,
+    };
+  });
+}
+
 function AnimatedItem({ children, onMouseEnter, index }) {
   return (
     <motion.div
@@ -39,7 +53,6 @@ function AnimatedItem({ children, onMouseEnter, index }) {
 
 export default function AnimatedNotificationList({ items, className, visibleCount = 3, interval = 2000 }) {
   const [selectedId, setSelectedId] = useState(null);
-  const [visibleItems, setVisibleItems] = useState([]);
   const sequenceRef = useRef(0);
 
   const resolvedItems = useMemo(
@@ -59,27 +72,11 @@ export default function AnimatedNotificationList({ items, className, visibleCoun
     [resolvedItems]
   );
 
+  const [visibleItems, setVisibleItems] = useState(() => buildInitialItems(templates, visibleCount));
+
   useEffect(() => {
-    if (templates.length === 0) {
-      setVisibleItems([]);
-      sequenceRef.current = 0;
-      return;
-    }
-
-    const count = Math.max(1, visibleCount);
-    const initial = Array.from({ length: count }, (_, index) => {
-      const template = templates[index % templates.length];
-      const sequence = index + 1;
-      return {
-        ...template,
-        id: `${template.baseId}-${sequence}`,
-      };
-    });
-
-    sequenceRef.current = initial.length;
-    setVisibleItems(initial);
-    setSelectedId(null);
-  }, [templates, visibleCount]);
+    sequenceRef.current = visibleItems.length;
+  }, [visibleItems.length]);
 
   useEffect(() => {
     if (templates.length === 0) return undefined;
@@ -108,11 +105,8 @@ export default function AnimatedNotificationList({ items, className, visibleCoun
     return () => clearInterval(timer);
   }, [interval, templates, visibleCount]);
 
-  useEffect(() => {
-    if (!selectedId) return;
-    if (visibleItems.some((item) => item.id === selectedId)) return;
-    setSelectedId(null);
-  }, [selectedId, visibleItems]);
+  const activeSelectedId =
+    selectedId && visibleItems.some((item) => item.id === selectedId) ? selectedId : null;
 
   const listHeight = CONTAINER_SLOTS * ITEM_HEIGHT + (CONTAINER_SLOTS - 1) * ITEM_GAP;
 
@@ -136,7 +130,7 @@ export default function AnimatedNotificationList({ items, className, visibleCoun
                 <div
                   className={cn(
                     'h-full rounded-md border border-border bg-background px-3 py-2.5 shadow-xs transition-colors',
-                    selectedId === item.id && 'bg-accent/60'
+                    activeSelectedId === item.id && 'bg-accent/60'
                   )}
                 >
                   <div className="mb-1.5 flex items-center justify-between gap-2">

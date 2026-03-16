@@ -6,6 +6,7 @@ import {
   TwitterIcon,
   YoutubeIcon,
 } from 'lucide-react';
+import Link from 'next/link';
 import { Calendar01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 
@@ -45,12 +46,12 @@ export default function MinimalFooter() {
         <div className="mx-auto max-w-6xl rounded-2xl border border-border bg-card p-7 shadow-sm md:p-10">
           <div className="grid grid-cols-6 gap-8">
             <div className="col-span-6 flex flex-col gap-5 md:col-span-4">
-              <a href="/" className="flex w-max items-center gap-2">
+              <Link href="/" className="flex w-max items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary shadow-sm shadow-primary/30">
                   <HugeiconsIcon icon={Calendar01Icon} size={15} strokeWidth={1.8} className="text-primary-foreground" />
                 </div>
                 <span className="text-base font-semibold tracking-tight text-foreground">ScheduleIt</span>
-              </a>
+              </Link>
               <p className="max-w-sm text-balance text-sm text-muted-foreground">
                 ScheduleIt helps universities run booking operations across classrooms, labs, and equipment without
                 spreadsheet chaos.
