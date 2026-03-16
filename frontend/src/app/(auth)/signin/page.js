@@ -8,7 +8,7 @@ export default function SigninPage() {
 
       <section className="relative z-10 w-full max-w-md rounded-3xl border border-border/60 bg-card/90 p-8 shadow-xl backdrop-blur">
         <div className="mb-6 space-y-2 text-center">
-          <h1 className="font-serif text-3xl font-bold tracking-tight">Create account</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Create account</h1>
           <p className="text-sm text-muted-foreground">
             Sign up with username, email, mobile number, and password.
           </p>

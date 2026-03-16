@@ -204,7 +204,7 @@ export default function AdminDashboardClient({ initialLabAllocations }) {
         {/* Sticky Form Panel */}
         <Card className="w-full xl:w-[400px] shrink-0 sticky top-24 shadow-xl bg-card/60 backdrop-blur border-border/60">
           <CardHeader className="border-b border-border/40 pb-4 mb-4">
-            <CardTitle className="font-serif text-2xl flex items-center gap-2">
+            <CardTitle className="text-2xl font-semibold flex items-center gap-2">
               {editingId
                 ? <HugeiconsIcon icon={PencilEdit01Icon} size={20} strokeWidth={1.8} className="text-primary" />
                 : <HugeiconsIcon icon={Calendar01Icon} size={20} strokeWidth={1.8} className="text-primary" />}
@@ -324,7 +324,7 @@ export default function AdminDashboardClient({ initialLabAllocations }) {
         {/* List View on the Right */}
         <Card className="flex-1 w-full shadow-lg bg-card/60 backdrop-blur border-border/60 overflow-hidden">
           <CardHeader className="border-b border-border/40 bg-muted/20">
-            <CardTitle className="font-serif flex items-center gap-2">
+            <CardTitle className="font-semibold flex items-center gap-2">
                <HugeiconsIcon icon={ListViewIcon} size={20} strokeWidth={1.8} className="text-primary" />
                Complete Lab List
             </CardTitle>
@@ -403,7 +403,7 @@ export default function AdminDashboardClient({ initialLabAllocations }) {
       {/* Bottom Section: Full Calendar View */}
       <div className="w-full space-y-6 pt-6 border-t border-border/40">
         <div className="flex flex-col gap-2">
-          <h2 className="font-serif text-3xl tracking-tight text-foreground flex items-center gap-3">
+          <h2 className="text-3xl font-semibold tracking-tight text-foreground flex items-center gap-3">
              <HugeiconsIcon icon={Calendar01Icon} size={32} strokeWidth={1.6} className="text-primary" />
              Weekly Lab Calendar
           </h2>
@@ -420,7 +420,7 @@ export default function AdminDashboardClient({ initialLabAllocations }) {
               <div key={day} className="flex flex-col gap-4 min-w-[220px]">
                 {/* Day Header */}
                 <div className="sticky top-0 z-10 w-full rounded-2xl bg-card border border-border/60 py-3 text-center shadow-md backdrop-blur-md">
-                  <span className="font-serif text-xl tracking-tight text-foreground">{day}</span>
+                  <span className="text-xl font-semibold tracking-tight text-foreground">{day}</span>
                   <div className="text-xs text-muted-foreground font-medium mt-0.5">{dayAllocations.length} Sessions</div>
                 </div>
 
@@ -444,7 +444,7 @@ export default function AdminDashboardClient({ initialLabAllocations }) {
                           </span>
                         </div>
                         <CardHeader className="p-4 pb-0 relative z-10">
-                          <CardTitle className="text-lg leading-tight font-serif mb-1">
+                          <CardTitle className="text-lg font-semibold leading-tight mb-1">
                             {lab.subject}
                           </CardTitle>
                           <CardDescription className="text-sm font-medium text-foreground/80 flex items-center gap-1.5 pb-2">

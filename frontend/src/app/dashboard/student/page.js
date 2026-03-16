@@ -57,7 +57,7 @@ export default async function StudentDashboard() {
       <div className="max-w-7xl mx-auto px-4 py-8 md:px-8">
         <header className="mb-10 flex flex-col md:flex-row md:items-end justify-between items-start gap-4">
           <div>
-            <h1 className="text-4xl font-serif font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-br from-primary to-primary/60">
+            <h1 className="text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-br from-primary to-primary/60">
               Student Schedule
             </h1>
             <p className="text-muted-foreground mt-2 text-lg">
@@ -76,7 +76,7 @@ export default async function StudentDashboard() {
 
         {labAllocations.length === 0 ? (
           <div className="flex flex-col items-center justify-center p-12 lg:p-24 bg-card/40 rounded-3xl border border-dashed border-border shadow-sm">
-            <h2 className="text-2xl font-serif font-medium text-foreground">
+            <h2 className="text-2xl font-semibold text-foreground">
               No Lab Allocations Yet
             </h2>
             <p className="text-muted-foreground mt-2 text-center max-w-sm">
@@ -92,7 +92,7 @@ export default async function StudentDashboard() {
                 <div key={day} className="flex flex-col gap-4 min-w-[220px]">
                   {/* Day Header */}
                   <div className="sticky top-0 z-10 w-full rounded-2xl bg-card border border-border/60 py-3 text-center shadow-md backdrop-blur-md">
-                    <span className="font-serif text-xl tracking-tight text-foreground">{day}</span>
+                    <span className="text-xl font-semibold tracking-tight text-foreground">{day}</span>
                     <div className="text-xs text-muted-foreground font-medium mt-0.5">{dayAllocations.length} Sessions</div>
                   </div>
 
@@ -116,7 +116,7 @@ export default async function StudentDashboard() {
                             </span>
                           </div>
                           <CardHeader className="p-4 relative z-10">
-                            <CardTitle className="text-lg leading-tight font-serif mb-1">
+                            <CardTitle className="text-lg font-semibold leading-tight mb-1">
                               {lab.subject}
                             </CardTitle>
                             <CardDescription className="text-sm font-medium text-foreground/80 flex items-center gap-1.5 pb-2">
