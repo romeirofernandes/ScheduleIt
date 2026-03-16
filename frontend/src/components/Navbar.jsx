@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import GlassSurface from "@/components/GlassSurface";
@@ -8,10 +8,12 @@ import {
   Calendar01Icon,
   Moon02Icon,
   Sun03Icon,
+  Logout01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTheme } from "next-themes";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { logoutAction } from "@/actions/auth/logout-action";
 import { cn } from "@/lib/utils";
 
 function NavLink({ href = "#", children }) {
@@ -29,6 +31,7 @@ export default function Navbar() {
   const { resolvedTheme, setTheme } = useTheme();
   const { data: session, status } = useSession();
   const [scrolled, setScrolled] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -42,6 +45,12 @@ export default function Navbar() {
   const handleBrandClick = (event) => {
     event.preventDefault();
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleLogout = () => {
+    startTransition(async () => {
+      await logoutAction();
+    });
   };
 
   return (
@@ -114,18 +123,42 @@ export default function Navbar() {
                   <span className="hidden max-w-36 truncate px-2 text-sm text-foreground/80 sm:inline">
                     {session?.user?.name ?? session?.user?.email}
                   </span>
-                  <Button size="sm" asChild>
-                    <Link href="/dashboard">Dashboard</Link>
+                  <Link href="/dashboard" className="inline-block">
+                    <Button size="sm" variant="outline" className="h-8 px-3">
+                      Dashboard
+                    </Button>
+                  </Link>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={handleLogout}
+                    disabled={isPending}
+                    className="h-8 gap-1.5 px-3 text-muted-foreground hover:text-foreground"
+                    aria-label="Sign out"
+                  >
+                    <HugeiconsIcon
+                      icon={Logout01Icon}
+                      size={16}
+                      strokeWidth={1.8}
+                      className={isPending ? "animate-pulse" : ""}
+                    />
+                    <span className="hidden sm:inline">
+                      {isPending ? "Signing out…" : "Sign Out"}
+                    </span>
                   </Button>
                 </>
               ) : (
                 <>
-                  <Button size="sm" variant="outline" asChild>
-                    <Link href="/login">Login</Link>
-                  </Button>
-                  <Button size="sm" asChild>
-                    <Link href="/signin">Sign up</Link>
-                  </Button>
+                  <Link href="/login" className="inline-block">
+                    <Button size="sm" variant="outline">
+                      Login
+                    </Button>
+                  </Link>
+                  <Link href="/signin" className="inline-block">
+                    <Button size="sm">
+                      Sign up
+                    </Button>
+                  </Link>
                 </>
               )}
             </div>

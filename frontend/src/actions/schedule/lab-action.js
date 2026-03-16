@@ -11,7 +11,7 @@ export async function createLabAllocation(formData) {
     const day = formData.get("day");
     const timeRange = formData.get("timeRange");
 
-    await prisma.labAllocation.create({
+    const newAlloc = await prisma.labAllocation.create({
       data: {
         targetClass,
         subject,
@@ -23,7 +23,7 @@ export async function createLabAllocation(formData) {
 
     revalidatePath("/dashboard/admin");
     revalidatePath("/dashboard/student");
-    return { success: true };
+    return { success: true, id: newAlloc.id };
   } catch (error) {
     console.error("Failed to create lab allocation:", error);
     if (error.code === 'P2002') {

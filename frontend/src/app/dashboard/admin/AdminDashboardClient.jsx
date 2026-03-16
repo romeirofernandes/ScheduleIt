@@ -38,7 +38,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PencilIcon, Trash2Icon, Loader2, CalendarIcon, ListIcon, CheckCircle2, AlertCircle } from "lucide-react";
+import {
+  PencilEdit01Icon,
+  Delete02Icon,
+  Loading03Icon,
+  Calendar01Icon,
+  ListViewIcon,
+  CheckmarkCircle01Icon,
+  AlertCircleIcon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { toast } from "sonner";
 
 import {
@@ -125,29 +134,29 @@ export default function AdminDashboardClient({ initialLabAllocations }) {
           );
           handleCancelEdit();
           toast.success("Allocation updated successfully!", {
-            icon: <CheckCircle2 className="h-4 w-4 text-green-500" />
+            icon: <HugeiconsIcon icon={CheckmarkCircle01Icon} size={16} strokeWidth={1.8} className="text-green-500" />
           });
         } else {
           toast.error(res.error, {
-            icon: <AlertCircle className="h-4 w-4 text-destructive" />
+            icon: <HugeiconsIcon icon={AlertCircleIcon} size={16} strokeWidth={1.8} className="text-destructive" />
           });
         }
       } else {
         const res = await createLabAllocation(formData);
         if (res.success) {
-          const tempId = Math.random().toString(36).substr(2, 9);
+          // Use real db ID here so immediate delete actions work correctly
           setLabAllocations([
-            { id: tempId, targetClass, subject, labName, day, timeRange },
+            { id: res.id, targetClass, subject, labName, day, timeRange },
             ...labAllocations,
           ]);
           handleCancelEdit(); 
           e.target.reset();
           toast.success("New allocation created!", {
-            icon: <CheckCircle2 className="h-4 w-4 text-green-500" />
+            icon: <HugeiconsIcon icon={CheckmarkCircle01Icon} size={16} strokeWidth={1.8} className="text-green-500" />
           });
         } else {
           toast.error(res.error, {
-            icon: <AlertCircle className="h-4 w-4 text-destructive" />
+            icon: <HugeiconsIcon icon={AlertCircleIcon} size={16} strokeWidth={1.8} className="text-destructive" />
           });
         }
       }
@@ -161,12 +170,12 @@ export default function AdminDashboardClient({ initialLabAllocations }) {
       if (res.success) {
         setLabAllocations(labAllocations.filter((lab) => lab.id !== itemToDelete));
         toast.success("Allocation deleted", {
-          icon: <Trash2Icon className="h-4 w-4 text-destructive" />
+          icon: <HugeiconsIcon icon={Delete02Icon} size={16} strokeWidth={1.8} className="text-destructive" />
         });
         setItemToDelete(null);
       } else {
         toast.error(res.error, {
-          icon: <AlertCircle className="h-4 w-4 text-destructive" />
+          icon: <HugeiconsIcon icon={AlertCircleIcon} size={16} strokeWidth={1.8} className="text-destructive" />
         });
       }
     });
@@ -196,7 +205,9 @@ export default function AdminDashboardClient({ initialLabAllocations }) {
         <Card className="w-full xl:w-[400px] shrink-0 sticky top-24 shadow-xl bg-card/60 backdrop-blur border-border/60">
           <CardHeader className="border-b border-border/40 pb-4 mb-4">
             <CardTitle className="font-serif text-2xl flex items-center gap-2">
-              {editingId ? <PencilIcon className="h-5 w-5 text-primary"/> : <CalendarIcon className="h-5 w-5 text-primary"/>}
+              {editingId
+                ? <HugeiconsIcon icon={PencilEdit01Icon} size={20} strokeWidth={1.8} className="text-primary" />
+                : <HugeiconsIcon icon={Calendar01Icon} size={20} strokeWidth={1.8} className="text-primary" />}
               {editingId ? "Edit Allocation" : "New Allocation"}
             </CardTitle>
             <CardDescription>
@@ -296,8 +307,8 @@ export default function AdminDashboardClient({ initialLabAllocations }) {
               </div>
 
               <div className="flex gap-3 pt-4">
-                <Button type="submit" disabled={isPending} className="flex-1">
-                  {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                <Button type="submit" disabled={isPending} className="flex-1 gap-2">
+                  {isPending && <HugeiconsIcon icon={Loading03Icon} size={16} strokeWidth={1.8} className="animate-spin" />}
                   {editingId ? "Save Changes" : "Create"}
                 </Button>
                 {editingId && (
@@ -314,7 +325,7 @@ export default function AdminDashboardClient({ initialLabAllocations }) {
         <Card className="flex-1 w-full shadow-lg bg-card/60 backdrop-blur border-border/60 overflow-hidden">
           <CardHeader className="border-b border-border/40 bg-muted/20">
             <CardTitle className="font-serif flex items-center gap-2">
-               <ListIcon className="h-5 w-5 text-primary" />
+               <HugeiconsIcon icon={ListViewIcon} size={20} strokeWidth={1.8} className="text-primary" />
                Complete Lab List
             </CardTitle>
             <CardDescription>
@@ -360,7 +371,7 @@ export default function AdminDashboardClient({ initialLabAllocations }) {
                           onClick={() => handleEditClick(lab)}
                           disabled={isPending}
                         >
-                          <PencilIcon className="h-4 w-4" />
+                          <HugeiconsIcon icon={PencilEdit01Icon} size={16} strokeWidth={1.8} />
                         </Button>
                         <Button
                           variant="ghost"
@@ -369,7 +380,7 @@ export default function AdminDashboardClient({ initialLabAllocations }) {
                           onClick={() => setItemToDelete(lab.id)}
                           disabled={isPending}
                         >
-                          <Trash2Icon className="h-4 w-4" />
+                          <HugeiconsIcon icon={Delete02Icon} size={16} strokeWidth={1.8} />
                         </Button>
                       </div>
                     </TableCell>
@@ -393,7 +404,7 @@ export default function AdminDashboardClient({ initialLabAllocations }) {
       <div className="w-full space-y-6 pt-6 border-t border-border/40">
         <div className="flex flex-col gap-2">
           <h2 className="font-serif text-3xl tracking-tight text-foreground flex items-center gap-3">
-             <CalendarIcon className="h-8 w-8 text-primary" />
+             <HugeiconsIcon icon={Calendar01Icon} size={32} strokeWidth={1.6} className="text-primary" />
              Weekly Lab Calendar
           </h2>
           <p className="text-muted-foreground text-sm">
@@ -448,7 +459,7 @@ export default function AdminDashboardClient({ initialLabAllocations }) {
                               onClick={() => handleEditClick(lab)}
                               disabled={isPending}
                             >
-                              <PencilIcon className="h-4 w-4" />
+                              <HugeiconsIcon icon={PencilEdit01Icon} size={16} strokeWidth={1.8} />
                             </Button>
                            <Button
                               variant="ghost"
@@ -457,7 +468,7 @@ export default function AdminDashboardClient({ initialLabAllocations }) {
                               onClick={() => setItemToDelete(lab.id)}
                               disabled={isPending}
                             >
-                              <Trash2Icon className="h-4 w-4" />
+                              <HugeiconsIcon icon={Delete02Icon} size={16} strokeWidth={1.8} />
                             </Button>
                         </CardFooter>
                       </Card>
@@ -488,7 +499,9 @@ export default function AdminDashboardClient({ initialLabAllocations }) {
               disabled={isPending}
               className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
             >
-              {isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Trash2Icon className="h-4 w-4 mr-2" />}
+              {isPending
+                ? <HugeiconsIcon icon={Loading03Icon} size={16} strokeWidth={1.8} className="animate-spin mr-1" />
+                : <HugeiconsIcon icon={Delete02Icon} size={16} strokeWidth={1.8} className="mr-1" />}
               Delete Session
             </AlertDialogAction>
           </AlertDialogFooter>
