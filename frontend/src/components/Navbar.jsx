@@ -114,12 +114,8 @@ export default function Navbar() {
                   <span className="hidden max-w-36 truncate px-2 text-sm text-foreground/80 sm:inline">
                     {session?.user?.name ?? session?.user?.email}
                   </span>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => signOut({ callbackUrl: "/" })}
-                  >
-                    Logout
+                  <Button size="sm" asChild>
+                    <Link href="/dashboard">Dashboard</Link>
                   </Button>
                 </>
               ) : (

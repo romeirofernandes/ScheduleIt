@@ -70,6 +70,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           name: user.username,
           email: user.email,
           mobNumber: user.mobNumber,
+          role: user.role,
+          studentClass: user.studentClass,
         };
       },
     }),
@@ -80,6 +82,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.id = user.id;
         token.username = user.name;
         token.mobNumber = user.mobNumber;
+        token.role = user.role;
+        token.studentClass = user.studentClass;
       }
 
       return token;
@@ -89,6 +93,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.id = token.id;
         session.user.name = token.username;
         session.user.mobNumber = token.mobNumber;
+        session.user.role = token.role;
+        session.user.studentClass = token.studentClass;
       }
 
       return session;

@@ -18,7 +18,7 @@ export async function loginAction(_prevState, formData) {
     await signIn("credentials", {
       identifier: parsed.data.identifier,
       password: parsed.data.password,
-      redirectTo: "/",
+      redirectTo: "/dashboard",
     });
 
     return {

@@ -35,3 +35,5 @@ if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prismaPool = pool;
   globalForPrisma.prisma = prisma;
 }
+
+// Invalidate turbopack cache 2

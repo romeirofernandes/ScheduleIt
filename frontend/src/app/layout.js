@@ -24,6 +24,8 @@ export const metadata = {
     "ScheduleIt is a centralized web platform that digitizes the booking of campus resources like labs, seminar halls, and equipment. Real-time availability, online booking, and admin approvals.",
 };
 
+import { Toaster } from "@/components/ui/sonner";
+
 export default function RootLayout({
   children,
 }) {
@@ -32,6 +34,7 @@ export default function RootLayout({
       <body className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
+          <Toaster position="top-center" richColors />
         </ThemeProvider>
       </body>
     </html>

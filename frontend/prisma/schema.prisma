@@ -11,12 +11,42 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  ADMIN
+  STUDENT
+}
+
+enum StudentClass {
+  FE
+  SE
+  TE
+  BE
+}
+
 model User {
-  id           String   @id @default(cuid())
-  username     String   @unique
-  email        String   @unique
-  mobNumber    String   @unique
+  id           String        @id @default(cuid())
+  username     String        @unique
+  email        String        @unique
+  mobNumber    String        @unique
   passwordHash String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  role         Role          @default(STUDENT)
+  studentClass StudentClass?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model LabAllocation {
+  id          String       @id @default(cuid())
+  targetClass StudentClass
+  subject     String
+  labName     String
+  day         String
+  timeRange   String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  // Enforce a lab cannot be double-booked
+  @@unique([labName, day, timeRange], name: "lab_time_conflict")
+  // Enforce a class cannot be double-booked
+  @@unique([targetClass, day, timeRange], name: "class_time_conflict")
 }
