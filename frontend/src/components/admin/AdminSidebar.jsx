@@ -32,6 +32,7 @@ import {
   Moon02Icon,
   Sun03Icon,
   UserCircleIcon,
+  PencilEdit01Icon,
 } from "@hugeicons/core-free-icons";
 
 const navigationGroups = [
@@ -41,7 +42,7 @@ const navigationGroups = [
       {
         title: "Allocations",
         href: "/dashboard/admin",
-        icon: ListViewIcon,
+        icon: Calendar01Icon, // Changed to Calendar icon
       },
     ],
   },
@@ -128,30 +129,32 @@ export function AdminSidebar({ userName }) {
 
       <SidebarFooter>
         <SidebarSeparator className="mx-0" />
-        <div className="flex items-center gap-2 group-data-[collapsible=icon]:justify-center">
-          <Button
-            variant="secondary"
-            size="icon-sm"
-            onClick={() => setTheme(isDark ? "light" : "dark")}
-            aria-label="Toggle theme"
-          >
-            {isDark ? (
-              <HugeiconsIcon icon={Sun03Icon} strokeWidth={2} />
-            ) : (
-              <HugeiconsIcon icon={Moon02Icon} strokeWidth={2} />
-            )}
-          </Button>
-
-          <Button
-            variant="destructive"
-            className={cn("flex-1 justify-start", state === "collapsed" && "hidden")}
-            onClick={handleLogout}
-            disabled={isPending}
-          >
-            <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} data-icon="inline-start" />
-            {isPending ? "Signing out" : "Sign Out"}
-          </Button>
-        </div>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={() => setTheme(isDark ? "light" : "dark")}
+              tooltip="Toggle theme"
+            >
+              {isDark ? (
+                <HugeiconsIcon icon={Sun03Icon} strokeWidth={2} />
+              ) : (
+                <HugeiconsIcon icon={Moon02Icon} strokeWidth={2} />
+              )}
+              <span>Toggle theme</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={handleLogout}
+              disabled={isPending}
+              tooltip="Sign Out"
+              className="text-destructive hover:bg-destructive hover:text-destructive-foreground focus:bg-destructive focus:text-destructive-foreground transition-colors"
+            >
+              <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} />
+              <span>{isPending ? "Signing out" : "Sign Out"}</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
 
       <SidebarRail />
