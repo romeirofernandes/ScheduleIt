@@ -116,7 +116,7 @@ export function AdminSidebar({ userName }) {
         <SidebarGroup className="mt-auto">
           <SidebarGroupLabel>Profile</SidebarGroupLabel>
           <SidebarGroupContent>
-            <div className="rounded-lg border border-sidebar-border bg-sidebar-accent p-3 group-data-[collapsible=icon]:hidden">
+            <div className="rounded-lg border bg-sidebar-accent p-3 group-data-[collapsible=icon]:hidden">
               <p className="truncate text-sm font-medium text-sidebar-foreground">{userName || "Administrator"}</p>
               <p className="mt-1 inline-flex items-center gap-1 text-xs text-sidebar-foreground/70">
                 <HugeiconsIcon icon={UserCircleIcon} strokeWidth={2} />
@@ -128,11 +128,13 @@ export function AdminSidebar({ userName }) {
       </SidebarContent>
 
       <SidebarFooter>
-        <SidebarSeparator className="mx-0" />
-        <SidebarMenu>
+        <SidebarSeparator className="mx-0 bg-muted-foreground/30" />
+        <SidebarMenu className="gap-2">
           <SidebarMenuItem>
-            <SidebarMenuButton
+            <Button
               onClick={() => setTheme(isDark ? "light" : "dark")}
+              variant="secondary"
+              className="w-full"
               tooltip="Toggle theme"
             >
               {isDark ? (
@@ -141,18 +143,19 @@ export function AdminSidebar({ userName }) {
                 <HugeiconsIcon icon={Moon02Icon} strokeWidth={2} />
               )}
               <span>Toggle theme</span>
-            </SidebarMenuButton>
+            </Button>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton
+            <Button
               onClick={handleLogout}
               disabled={isPending}
               tooltip="Sign Out"
-              className="text-destructive hover:bg-destructive hover:text-destructive-foreground focus:bg-destructive focus:text-destructive-foreground transition-colors"
+              variant="destructive"
+              className={cn("w-full", isPending && "cursor-not-allowed")}
             >
               <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} />
               <span>{isPending ? "Signing out" : "Sign Out"}</span>
-            </SidebarMenuButton>
+            </Button>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
