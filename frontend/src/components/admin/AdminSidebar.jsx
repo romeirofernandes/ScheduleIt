@@ -7,7 +7,12 @@ import { useSyncExternalStore, useTransition } from "react";
 
 import { logoutAction } from "@/actions/auth/logout-action";
 import { cn } from "@/lib/utils";
-import { getRoleLabel, canManageUsers, ROLES } from "@/lib/permissions";
+import {
+  getRoleLabel,
+  canManageUsers,
+  canWriteSchedule,
+  ROLES,
+} from "@/lib/permissions";
 import { Button } from "@/components/ui/button";
 import {
   Sidebar,
@@ -34,6 +39,7 @@ import {
   UserCircleIcon,
   UserMultiple02Icon,
   Building03Icon,
+  BookOpen01Icon,
 } from "@hugeicons/core-free-icons";
 
 /**
@@ -54,6 +60,19 @@ function buildNavigationGroups(role) {
       },
     ],
   });
+
+  if (canWriteSchedule(role)) {
+    groups.push({
+      label: "Scheduling",
+      items: [
+        {
+          title: "Timetable Generator",
+          href: "/dashboard/admin/timetable",
+          icon: BookOpen01Icon,
+        },
+      ],
+    });
+  }
 
   // ── Admin group (SUPER_ADMIN only) ────────────────────────────────────────
   if (canManageUsers(role)) {

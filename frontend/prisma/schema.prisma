@@ -35,6 +35,17 @@ enum ClassroomAccessStatus {
   LOCK_REJECTED
 }
 
+enum TimetablePlanStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum TimetableEntryType {
+  THEORY
+  LAB
+}
+
 model User {
   id                        String                   @id @default(cuid())
   username                  String                   @unique
@@ -50,6 +61,7 @@ model User {
   assignedClass             StudentClass?
   classroomRequests         ClassroomAccessRequest[] @relation("ClassroomRequestByStudent")
   reviewedClassroomRequests ClassroomAccessRequest[] @relation("ClassroomRequestByTeacher")
+  createdTimetablePlans     TimetablePlan[]
   createdAt                 DateTime                 @default(now())
   updatedAt                 DateTime                 @updatedAt
 }
@@ -93,4 +105,53 @@ model ClassroomAccessRequest {
 
   @@index([requestedById, status])
   @@index([classTeacherId, status])
+}
+
+model TimetablePlan {
+  id                String              @id @default(cuid())
+  title             String
+  targetClass       StudentClass
+  status            TimetablePlanStatus @default(DRAFT)
+  effectiveFrom     DateTime?
+  usedExtendedHours Boolean             @default(false)
+  createdById       String
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  createdBy    User                   @relation(fields: [createdById], references: [id])
+  requirements TimetableRequirement[]
+  entries      TimetableEntry[]
+
+  @@index([targetClass, status, effectiveFrom])
+  @@index([createdById, createdAt])
+}
+
+model TimetableRequirement {
+  id          String   @id @default(cuid())
+  planId      String
+  subjectName String
+  theoryHours Int      @default(0)
+  labHours    Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  plan TimetablePlan @relation(fields: [planId], references: [id])
+
+  @@index([planId])
+}
+
+model TimetableEntry {
+  id          String             @id @default(cuid())
+  planId      String
+  day         String
+  startTime   String
+  endTime     String
+  slotIndex   Int
+  subjectName String
+  entryType   TimetableEntryType
+  classroom   String?
+  createdAt   DateTime           @default(now())
+
+  plan TimetablePlan @relation(fields: [planId], references: [id])
+
+  @@index([planId, day, slotIndex])
 }

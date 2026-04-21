@@ -18,17 +18,49 @@ export default async function StudentDashboard() {
 
   const userClass = session.user.studentClass || "FE";
 
-  const labAllocations = await prisma.labAllocation.findMany({
+  const today = new Date();
+
+  const officialPlan = await prisma.timetablePlan.findFirst({
     where: {
       targetClass: userClass,
+      status: "PUBLISHED",
+      effectiveFrom: {
+        lte: today,
+      },
     },
-    orderBy: [{ day: "asc" }, { timeRange: "asc" }],
+    include: {
+      entries: true,
+    },
+    orderBy: {
+      effectiveFrom: "desc",
+    },
   });
+
+  const scheduleAllocations = officialPlan
+    ? officialPlan.entries.map((entry) => ({
+        id: entry.id,
+        targetClass: userClass,
+        subject:
+          entry.entryType === "LAB"
+            ? `${entry.subjectName} (Lab)`
+            : `${entry.subjectName} (Theory)`,
+        labName: entry.classroom ?? "TBA",
+        day: entry.day,
+        timeRange: `${entry.startTime} - ${entry.endTime}`,
+      }))
+    : await prisma.labAllocation.findMany({
+        where: {
+          targetClass: userClass,
+        },
+        orderBy: [{ day: "asc" }, { timeRange: "asc" }],
+      });
 
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Weekly Schedule</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">
+          Weekly Schedule
+        </h1>
         <p className="text-sm text-muted-foreground">
           {session.user.name || "Student"} - Class {userClass}
           {session.user.isCR && (
@@ -37,9 +69,15 @@ export default async function StudentDashboard() {
             </span>
           )}
         </p>
+        {officialPlan && (
+          <p className="text-xs text-muted-foreground mt-1">
+            Official timetable active from{" "}
+            {new Date(officialPlan.effectiveFrom).toLocaleDateString()}.
+          </p>
+        )}
       </div>
 
-      <StudentScheduleCalendar allocations={labAllocations} />
+      <StudentScheduleCalendar allocations={scheduleAllocations} />
     </div>
   );
 }
