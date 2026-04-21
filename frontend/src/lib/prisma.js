@@ -23,11 +23,14 @@ if (needsSsl) {
 
 const pool = globalForPrisma.prismaPool ?? new Pool(poolConfig);
 
+const cachedClient = globalForPrisma.prisma;
+
 const prismaClient =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    adapter: new PrismaPg(pool),
-  });
+  cachedClient && typeof cachedClient.classroomAccessRequest !== "undefined"
+    ? cachedClient
+    : new PrismaClient({
+        adapter: new PrismaPg(pool),
+      });
 
 export const prisma = prismaClient;
 

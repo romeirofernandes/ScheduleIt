@@ -33,20 +33,38 @@ import {
   StarIcon,
   Sun03Icon,
   TimeQuarter02Icon,
+  Building03Icon,
 } from "@hugeicons/core-free-icons";
 
-const navigationGroups = [
-  {
-    label: "Overview",
-    items: [
-      {
-        title: "Schedule",
-        href: "/dashboard/student",
-        icon: BookOpen01Icon,
-      },
-    ],
-  },
-];
+function buildNavigationGroups(isCR) {
+  const groups = [
+    {
+      label: "Overview",
+      items: [
+        {
+          title: "Schedule",
+          href: "/dashboard/student",
+          icon: BookOpen01Icon,
+        },
+      ],
+    },
+  ];
+
+  if (isCR) {
+    groups.push({
+      label: "Class Representative",
+      items: [
+        {
+          title: "Classroom Access",
+          href: "/dashboard/student/classroom-access",
+          icon: Building03Icon,
+        },
+      ],
+    });
+  }
+
+  return groups;
+}
 
 export function StudentSidebar({ userName, studentClass, isCR }) {
   const pathname = usePathname();
@@ -56,8 +74,9 @@ export function StudentSidebar({ userName, studentClass, isCR }) {
   const mounted = useSyncExternalStore(
     () => () => {},
     () => true,
-    () => false
+    () => false,
   );
+  const navigationGroups = buildNavigationGroups(isCR);
   const isDark = mounted && resolvedTheme === "dark";
 
   const handleLogout = () => {
@@ -83,7 +102,9 @@ export function StudentSidebar({ userName, studentClass, isCR }) {
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
                 <span className="truncate font-semibold">ScheduleIt</span>
-                <span className="truncate text-xs text-sidebar-foreground/70">Student Portal</span>
+                <span className="truncate text-xs text-sidebar-foreground/70">
+                  Student Portal
+                </span>
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>

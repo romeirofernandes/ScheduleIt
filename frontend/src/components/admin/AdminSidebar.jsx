@@ -7,7 +7,7 @@ import { useSyncExternalStore, useTransition } from "react";
 
 import { logoutAction } from "@/actions/auth/logout-action";
 import { cn } from "@/lib/utils";
-import { getRoleLabel, canManageUsers, canWriteSchedule } from "@/lib/permissions";
+import { getRoleLabel, canManageUsers, ROLES } from "@/lib/permissions";
 import { Button } from "@/components/ui/button";
 import {
   Sidebar,
@@ -28,11 +28,12 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Calendar01Icon,
-  ListViewIcon,
   Logout01Icon,
   Moon02Icon,
   Sun03Icon,
   UserCircleIcon,
+  UserMultiple02Icon,
+  Building03Icon,
 } from "@hugeicons/core-free-icons";
 
 /**
@@ -68,6 +69,20 @@ function buildNavigationGroups(role) {
     });
   }
 
+  // ── Class teacher workflow ─────────────────────────────────────────────────
+  if (role === ROLES.CLASS_TEACHER) {
+    groups.push({
+      label: "Class Teacher",
+      items: [
+        {
+          title: "Lock Proof Reviews",
+          href: "/dashboard/admin/classroom-requests",
+          icon: Building03Icon,
+        },
+      ],
+    });
+  }
+
   return groups;
 }
 
@@ -79,7 +94,7 @@ export function AdminSidebar({ userName, userRole }) {
   const mounted = useSyncExternalStore(
     () => () => {},
     () => true,
-    () => false
+    () => false,
   );
   const isDark = mounted && resolvedTheme === "dark";
 
@@ -145,7 +160,9 @@ export function AdminSidebar({ userName, userRole }) {
           <SidebarGroupLabel>Profile</SidebarGroupLabel>
           <SidebarGroupContent>
             <div className="rounded-lg border border-sidebar-border bg-sidebar-accent p-3 group-data-[collapsible=icon]:hidden">
-              <p className="truncate text-sm font-medium text-sidebar-foreground">{userName || "Administrator"}</p>
+              <p className="truncate text-sm font-medium text-sidebar-foreground">
+                {userName || "Administrator"}
+              </p>
               <p className="mt-1 inline-flex items-center gap-1 text-xs text-sidebar-foreground/70">
                 <HugeiconsIcon icon={UserCircleIcon} strokeWidth={2} />
                 {roleLabel}

@@ -27,21 +27,31 @@ enum StudentClass {
   BE
 }
 
+enum ClassroomAccessStatus {
+  REQUESTED
+  APPROVED
+  LOCK_PROOF_SUBMITTED
+  LOCK_CONFIRMED
+  LOCK_REJECTED
+}
+
 model User {
-  id            String        @id @default(cuid())
-  username      String        @unique
-  email         String        @unique
-  mobNumber     String        @unique
-  passwordHash  String
-  role          Role          @default(STUDENT)
+  id                        String                   @id @default(cuid())
+  username                  String                   @unique
+  email                     String                   @unique
+  mobNumber                 String                   @unique
+  passwordHash              String
+  role                      Role                     @default(STUDENT)
   // For STUDENT: which class they belong to
-  studentClass  StudentClass?
+  studentClass              StudentClass?
   // For STUDENT: is this student a class representative?
-  isCR          Boolean       @default(false)
+  isCR                      Boolean                  @default(false)
   // For CLASS_TEACHER: which class are they the class teacher for?
-  assignedClass StudentClass?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  assignedClass             StudentClass?
+  classroomRequests         ClassroomAccessRequest[] @relation("ClassroomRequestByStudent")
+  reviewedClassroomRequests ClassroomAccessRequest[] @relation("ClassroomRequestByTeacher")
+  createdAt                 DateTime                 @default(now())
+  updatedAt                 DateTime                 @updatedAt
 }
 
 model LabAllocation {
@@ -58,4 +68,29 @@ model LabAllocation {
   @@unique([labName, day, timeRange], name: "lab_time_conflict")
   // Enforce a class cannot be double-booked
   @@unique([targetClass, day, timeRange], name: "class_time_conflict")
+}
+
+model ClassroomAccessRequest {
+  id                   String                @id @default(cuid())
+  requestedById        String
+  classTeacherId       String
+  studentClass         StudentClass
+  classroomName        String
+  requestedDate        DateTime
+  requestedStartTime   String                @default("15:30")
+  requestedEndTime     String                @default("18:30")
+  purpose              String                @default("")
+  status               ClassroomAccessStatus @default(REQUESTED)
+  lockProofImageUrl    String?
+  lockProofSubmittedAt DateTime?
+  teacherRemarks       String?
+  teacherConfirmedAt   DateTime?
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+
+  requestedBy  User @relation("ClassroomRequestByStudent", fields: [requestedById], references: [id])
+  classTeacher User @relation("ClassroomRequestByTeacher", fields: [classTeacherId], references: [id])
+
+  @@index([requestedById, status])
+  @@index([classTeacherId, status])
 }
