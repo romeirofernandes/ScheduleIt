@@ -146,31 +146,36 @@ export function StudentSidebar({ userName, studentClass, isCR }) {
       </SidebarContent>
 
       <SidebarFooter>
-        <SidebarSeparator className="mx-0" />
-        <div className="flex items-center gap-2 group-data-[collapsible=icon]:justify-center">
-          <Button
-            variant="secondary"
-            size="icon-sm"
-            onClick={() => setTheme(isDark ? "light" : "dark")}
-            aria-label="Toggle theme"
-          >
-            {isDark ? (
-              <HugeiconsIcon icon={Sun03Icon} strokeWidth={2} />
-            ) : (
-              <HugeiconsIcon icon={Moon02Icon} strokeWidth={2} />
-            )}
-          </Button>
-
-          <Button
-            variant="destructive"
-            className={cn("flex-1 justify-start", state === "collapsed" && "hidden")}
-            onClick={handleLogout}
-            disabled={isPending}
-          >
-            <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} data-icon="inline-start" />
-            {isPending ? "Signing out" : "Sign Out"}
-          </Button>
-        </div>
+        <SidebarSeparator className="mx-0 bg-muted-foreground/30" />
+        <SidebarMenu className="gap-2">
+          <SidebarMenuItem>
+            <Button
+              onClick={() => setTheme(isDark ? "light" : "dark")}
+              variant="secondary"
+              className="w-full"
+              tooltip="Toggle theme"
+            >
+              {isDark ? (
+                <HugeiconsIcon icon={Sun03Icon} strokeWidth={2} />
+              ) : (
+                <HugeiconsIcon icon={Moon02Icon} strokeWidth={2} />
+              )}
+              <span>Toggle theme</span>
+            </Button>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <Button
+              onClick={handleLogout}
+              disabled={isPending}
+              tooltip="Sign Out"
+              variant="destructive"
+              className={cn("w-full", isPending && "cursor-not-allowed")}
+            >
+              <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} />
+              <span>{isPending ? "Signing out" : "Sign Out"}</span>
+            </Button>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
 
       <SidebarRail />

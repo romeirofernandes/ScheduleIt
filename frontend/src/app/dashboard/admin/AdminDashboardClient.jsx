@@ -5,20 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from "@/components/ui/card";
-import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -29,7 +22,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-
 import {
   Table,
   TableBody,
@@ -39,17 +31,24 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { 
+  Calendar01Icon, 
+  PlusSignIcon,
   PencilEdit01Icon,
   Delete02Icon,
   Loading03Icon,
-  Calendar01Icon,
   ListViewIcon,
   CheckmarkCircle01Icon,
   AlertCircleIcon,
-  LockIcon,
 } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 import {
   createLabAllocation,
@@ -63,22 +62,25 @@ const TIME_SLOTS = [
   "11:00 AM - 01:00 PM",
   "01:30 PM - 03:30 PM",
 ];
+
 const LAB_ROOMS = [
   "601", "602", "603", "604", "608", "609", "610", "611", "612",
   "708", "709", "710", "711", "712",
   "801", "802", "803", "804", "809", "810", "811", "812"
 ];
 
-/**
- * @param {object}  props
- * @param {Array}   props.initialLabAllocations
- * @param {boolean} props.canWrite  – true for SUPER_ADMIN / ADMIN / TIMETABLE_SETTER
- */
+const CLASS_COLORS = {
+  FE: { bg: "bg-[#22c55e]/15", border: "border-[#22c55e]/30", text: "text-[#22c55e]", dot: "#22c55e" },
+  SE: { bg: "bg-[#3b82f6]/15", border: "border-[#3b82f6]/30", text: "text-[#3b82f6]", dot: "#3b82f6" },
+  TE: { bg: "bg-[#f59e0b]/15", border: "border-[#f59e0b]/30", text: "text-[#f59e0b]", dot: "#f59e0b" },
+  BE: { bg: "bg-[#8b5cf6]/15", border: "border-[#8b5cf6]/30", text: "text-[#8b5cf6]", dot: "#8b5cf6" },
+};
+
 export default function AdminDashboardClient({ initialLabAllocations, canWrite }) {
   const [labAllocations, setLabAllocations] = useState(initialLabAllocations);
   const [isPending, startTransition] = useTransition();
 
-  // For Editing
+  // Form State
   const [editingId, setEditingId] = useState(null);
   const [formDataState, setFormDataState] = useState({
     targetClass: "FE",
@@ -99,6 +101,7 @@ export default function AdminDashboardClient({ initialLabAllocations, canWrite }
       day: lab.day,
       timeRange: lab.timeRange,
     });
+    // Scroll to top where form is
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -119,12 +122,10 @@ export default function AdminDashboardClient({ initialLabAllocations, canWrite }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const targetClass = formData.get("targetClass");
-    const subject = formData.get("subject");
-    const labName = formData.get("labName");
-    const day = formData.get("day");
-    const timeRange = formData.get("timeRange");
+    const formData = new FormData();
+    Object.entries(formDataState).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
 
     startTransition(async () => {
       if (editingId) {
@@ -133,7 +134,7 @@ export default function AdminDashboardClient({ initialLabAllocations, canWrite }
           setLabAllocations(
             labAllocations.map((lab) =>
               lab.id === editingId
-                ? { ...lab, targetClass, subject, labName, day, timeRange }
+                ? { ...lab, ...formDataState }
                 : lab
             )
           );
@@ -150,10 +151,10 @@ export default function AdminDashboardClient({ initialLabAllocations, canWrite }
         const res = await createLabAllocation(formData);
         if (res.success) {
           setLabAllocations([
-            { id: res.id, targetClass, subject, labName, day, timeRange },
+            { id: res.id, ...formDataState },
             ...labAllocations,
           ]);
-          handleCancelEdit();
+          handleCancelEdit(); 
           e.target.reset();
           toast.success("New allocation created!", {
             icon: <HugeiconsIcon icon={CheckmarkCircle01Icon} size={16} strokeWidth={1.8} className="text-green-500" />
@@ -187,25 +188,32 @@ export default function AdminDashboardClient({ initialLabAllocations, canWrite }
 
   // Group allocations for Calendar format
   const allocationsByDay = useMemo(() => {
-    const groups = { Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [] };
+    const groups = {};
+    DAYS_OF_WEEK.forEach(day => {
+      groups[day] = [];
+    });
+
     labAllocations.forEach((lab) => {
       if (groups[lab.day]) groups[lab.day].push(lab);
     });
+
+    // Sort within days by time slot index
     Object.keys(groups).forEach(day => {
-      groups[day].sort((a, b) => {
-        return TIME_SLOTS.indexOf(a.timeRange) - TIME_SLOTS.indexOf(b.timeRange);
-      });
+       groups[day].sort((a, b) => {
+         return TIME_SLOTS.indexOf(a.timeRange) - TIME_SLOTS.indexOf(b.timeRange);
+       });
     });
+
     return groups;
   }, [labAllocations]);
 
   return (
     <div className="flex flex-col gap-12">
-      {/* Top Section: Form on Left (write-only), List on Right */}
+      {/* Top Section: Form on Left, List on Right */}
       <div className="flex flex-col xl:flex-row gap-8 items-start">
-
-        {/* ── Form Panel (hidden for read-only roles) ─────────────────────── */}
-        {canWrite ? (
+        
+        {/* Sticky Form Panel */}
+        {canWrite && (
           <Card className="w-full xl:w-[400px] shrink-0 sticky top-24 shadow-xl bg-card/60 backdrop-blur border-border/60">
             <CardHeader className="border-b border-border/40 pb-4 mb-4">
               <CardTitle className="text-2xl font-semibold flex items-center gap-2">
@@ -225,9 +233,9 @@ export default function AdminDashboardClient({ initialLabAllocations, canWrite }
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Class</Label>
-                    <Select
-                      name="targetClass"
-                      value={formDataState.targetClass}
+                    <Select 
+                      name="targetClass" 
+                      value={formDataState.targetClass} 
                       onValueChange={(v) => handleChange("targetClass", v)}
                       required
                     >
@@ -244,8 +252,8 @@ export default function AdminDashboardClient({ initialLabAllocations, canWrite }
                   </div>
                   <div className="space-y-2">
                     <Label>Day</Label>
-                    <Select
-                      name="day"
+                    <Select 
+                      name="day" 
                       value={formDataState.day}
                       onValueChange={(v) => handleChange("day", v)}
                       required
@@ -255,7 +263,7 @@ export default function AdminDashboardClient({ initialLabAllocations, canWrite }
                       </SelectTrigger>
                       <SelectContent>
                         {DAYS_OF_WEEK.map((d) => (
-                          <SelectItem key={d} value={d}>{d.substring(0, 3)}</SelectItem>
+                          <SelectItem key={d} value={d}>{d.substring(0,3)}</SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
@@ -274,8 +282,8 @@ export default function AdminDashboardClient({ initialLabAllocations, canWrite }
                 </div>
                 <div className="space-y-2">
                   <Label>Lab Number / Room</Label>
-                  <Select
-                    name="labName"
+                  <Select 
+                    name="labName" 
                     value={formDataState.labName}
                     onValueChange={(v) => handleChange("labName", v)}
                     required
@@ -293,8 +301,8 @@ export default function AdminDashboardClient({ initialLabAllocations, canWrite }
 
                 <div className="space-y-2">
                   <Label>Time Range (Slot)</Label>
-                  <Select
-                    name="timeRange"
+                  <Select 
+                    name="timeRange" 
                     value={formDataState.timeRange}
                     onValueChange={(v) => handleChange("timeRange", v)}
                     required
@@ -324,33 +332,20 @@ export default function AdminDashboardClient({ initialLabAllocations, canWrite }
               </form>
             </CardContent>
           </Card>
-        ) : (
-          /* Read-only notice card */
-          <Card className="w-full xl:w-[400px] shrink-0 sticky top-24 bg-muted/30 border-border/40">
-            <CardContent className="flex flex-col items-center justify-center gap-3 py-10 text-center">
-              <div className="flex size-12 items-center justify-center rounded-full bg-muted">
-                <HugeiconsIcon icon={LockIcon} size={22} strokeWidth={1.8} className="text-muted-foreground" />
-              </div>
-              <p className="font-semibold text-foreground">View-only access</p>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Your role can view all schedules but cannot create, edit, or delete lab allocations.
-              </p>
-            </CardContent>
-          </Card>
         )}
 
-        {/* ── List View ───────────────────────────────────────────────────── */}
+        {/* List View on the Right */}
         <Card className="flex-1 w-full shadow-lg bg-card/60 backdrop-blur border-border/60 overflow-hidden">
           <CardHeader className="border-b border-border/40 bg-muted/20">
             <CardTitle className="font-semibold flex items-center gap-2">
-              <HugeiconsIcon icon={ListViewIcon} size={20} strokeWidth={1.8} className="text-primary" />
-              Complete Lab List
+               <HugeiconsIcon icon={ListViewIcon} size={20} strokeWidth={1.8} className="text-primary" />
+               Complete Lab List
             </CardTitle>
             <CardDescription>
               A fast, readable list of every currently scheduled lab.
             </CardDescription>
           </CardHeader>
-          <div className="overflow-x-auto max-h-[500px] overflow-y-auto scrollbar-hide">
+          <div className="overflow-x-auto max-h-[400px] overflow-y-auto scrollbar-hide">
             <Table>
               <TableHeader className="bg-muted/50 sticky top-0 z-10">
                 <TableRow>
@@ -417,24 +412,25 @@ export default function AdminDashboardClient({ initialLabAllocations, canWrite }
             </Table>
           </div>
         </Card>
+
       </div>
 
       {/* Bottom Section: Full Calendar View */}
       <div className="w-full space-y-6 pt-6 border-t border-border/40">
         <div className="flex flex-col gap-2">
           <h2 className="text-3xl font-semibold tracking-tight text-foreground flex items-center gap-3">
-            <HugeiconsIcon icon={Calendar01Icon} size={32} strokeWidth={1.6} className="text-primary" />
-            Weekly Lab Calendar
+             <HugeiconsIcon icon={Calendar01Icon} size={32} strokeWidth={1.6} className="text-primary" />
+             Weekly Lab Calendar
           </h2>
           <p className="text-muted-foreground text-sm">
             Overview of all lab assignments mapped directly into a responsive weekly grid.
           </p>
         </div>
-
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 items-start">
           {DAYS_OF_WEEK.map((day) => {
             const dayAllocations = allocationsByDay[day] || [];
-
+            
             return (
               <div key={day} className="flex flex-col gap-4 min-w-[220px]">
                 {/* Day Header */}
@@ -451,9 +447,9 @@ export default function AdminDashboardClient({ initialLabAllocations, canWrite }
                     </div>
                   ) : (
                     dayAllocations.map((lab) => (
-                      <Card
-                        key={lab.id}
-                        className={`group relative overflow-hidden bg-card/80 backdrop-blur border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${editingId === lab.id ? "ring-2 ring-primary ring-offset-2 ring-offset-background" : ""}`}
+                      <Card 
+                        key={lab.id} 
+                        className={`group relative overflow-hidden bg-card/80 backdrop-blur border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${editingId === lab.id ? 'ring-2 ring-primary ring-offset-2 ring-offset-background' : ''}`}
                       >
                         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                         <div className="bg-primary/5 px-4 py-2 border-b border-border/50 text-xs font-semibold text-primary uppercase tracking-wider flex justify-between items-center">
@@ -467,29 +463,29 @@ export default function AdminDashboardClient({ initialLabAllocations, canWrite }
                             {lab.subject}
                           </CardTitle>
                           <CardDescription className="text-sm font-medium text-foreground/80 flex items-center gap-1.5 pb-2">
-                            <div className="w-2 h-2 rounded-full bg-primary/60"></div> {lab.labName}
+                             <div className="w-2 h-2 rounded-full bg-primary/60"></div> {lab.labName}
                           </CardDescription>
                         </CardHeader>
                         {canWrite && (
                           <CardFooter className="px-4 py-3 bg-muted/10 border-t border-border/30 flex justify-end gap-2 relative z-10">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-8 w-8 p-0 text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors rounded-full"
-                              onClick={() => handleEditClick(lab)}
-                              disabled={isPending}
-                            >
-                              <HugeiconsIcon icon={PencilEdit01Icon} size={16} strokeWidth={1.8} />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors rounded-full"
-                              onClick={() => setItemToDelete(lab.id)}
-                              disabled={isPending}
-                            >
-                              <HugeiconsIcon icon={Delete02Icon} size={16} strokeWidth={1.8} />
-                            </Button>
+                             <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 w-8 p-0 text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors rounded-full"
+                                onClick={() => handleEditClick(lab)}
+                                disabled={isPending}
+                              >
+                                <HugeiconsIcon icon={PencilEdit01Icon} size={16} strokeWidth={1.8} />
+                              </Button>
+                             <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors rounded-full"
+                                onClick={() => setItemToDelete(lab.id)}
+                                disabled={isPending}
+                              >
+                                <HugeiconsIcon icon={Delete02Icon} size={16} strokeWidth={1.8} />
+                              </Button>
                           </CardFooter>
                         )}
                       </Card>
@@ -518,7 +514,8 @@ export default function AdminDashboardClient({ initialLabAllocations, canWrite }
                 handleDelete();
               }}
               disabled={isPending}
-              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+              variant="destructive" 
+              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground transition-colors"
             >
               {isPending
                 ? <HugeiconsIcon icon={Loading03Icon} size={16} strokeWidth={1.8} className="animate-spin mr-1" />

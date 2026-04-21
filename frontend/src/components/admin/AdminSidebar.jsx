@@ -33,7 +33,6 @@ import {
   Moon02Icon,
   Sun03Icon,
   UserCircleIcon,
-  UserMultiple02Icon,
 } from "@hugeicons/core-free-icons";
 
 /**
@@ -50,7 +49,7 @@ function buildNavigationGroups(role) {
       {
         title: "Allocations",
         href: "/dashboard/admin",
-        icon: ListViewIcon,
+        icon: Calendar01Icon, // Changed to Calendar icon
       },
     ],
   });
@@ -146,9 +145,7 @@ export function AdminSidebar({ userName, userRole }) {
           <SidebarGroupLabel>Profile</SidebarGroupLabel>
           <SidebarGroupContent>
             <div className="rounded-lg border border-sidebar-border bg-sidebar-accent p-3 group-data-[collapsible=icon]:hidden">
-              <p className="truncate text-sm font-medium text-sidebar-foreground">
-                {userName || "User"}
-              </p>
+              <p className="truncate text-sm font-medium text-sidebar-foreground">{userName || "Administrator"}</p>
               <p className="mt-1 inline-flex items-center gap-1 text-xs text-sidebar-foreground/70">
                 <HugeiconsIcon icon={UserCircleIcon} strokeWidth={2} />
                 {roleLabel}
@@ -159,31 +156,36 @@ export function AdminSidebar({ userName, userRole }) {
       </SidebarContent>
 
       <SidebarFooter>
-        <SidebarSeparator className="mx-0" />
-        <div className="flex items-center gap-2 group-data-[collapsible=icon]:justify-center">
-          <Button
-            variant="secondary"
-            size="icon-sm"
-            onClick={() => setTheme(isDark ? "light" : "dark")}
-            aria-label="Toggle theme"
-          >
-            {isDark ? (
-              <HugeiconsIcon icon={Sun03Icon} strokeWidth={2} />
-            ) : (
-              <HugeiconsIcon icon={Moon02Icon} strokeWidth={2} />
-            )}
-          </Button>
-
-          <Button
-            variant="destructive"
-            className={cn("flex-1 justify-start", state === "collapsed" && "hidden")}
-            onClick={handleLogout}
-            disabled={isPending}
-          >
-            <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} data-icon="inline-start" />
-            {isPending ? "Signing out" : "Sign Out"}
-          </Button>
-        </div>
+        <SidebarSeparator className="mx-0 bg-muted-foreground/30" />
+        <SidebarMenu className="gap-2">
+          <SidebarMenuItem>
+            <Button
+              onClick={() => setTheme(isDark ? "light" : "dark")}
+              variant="secondary"
+              className="w-full"
+              tooltip="Toggle theme"
+            >
+              {isDark ? (
+                <HugeiconsIcon icon={Sun03Icon} strokeWidth={2} />
+              ) : (
+                <HugeiconsIcon icon={Moon02Icon} strokeWidth={2} />
+              )}
+              <span>Toggle theme</span>
+            </Button>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <Button
+              onClick={handleLogout}
+              disabled={isPending}
+              tooltip="Sign Out"
+              variant="destructive"
+              className={cn("w-full", isPending && "cursor-not-allowed")}
+            >
+              <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} />
+              <span>{isPending ? "Signing out" : "Sign Out"}</span>
+            </Button>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
 
       <SidebarRail />
