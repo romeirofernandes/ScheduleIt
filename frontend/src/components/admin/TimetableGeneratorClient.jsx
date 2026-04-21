@@ -84,7 +84,9 @@ function overlaps(entry, row) {
 }
 
 function showExtendedRow(plan) {
-  return plan.usedExtendedHours || plan.entries.some((e) => e.endTime === "16:30");
+  return (
+    plan.usedExtendedHours || plan.entries.some((e) => e.endTime === "16:30")
+  );
 }
 
 function sortEntries(entries) {
@@ -400,10 +402,15 @@ export default function TimetableGeneratorClient({ initialPlans }) {
                       </tr>
                     </thead>
                     <tbody>
-                      {TIMETABLE_ROWS.filter((row) => !row.extended || showExtendedRow(plan)).map((row) => {
+                      {TIMETABLE_ROWS.filter(
+                        (row) => !row.extended || showExtendedRow(plan),
+                      ).map((row) => {
                         if (row.type === "break") {
                           return (
-                            <tr key={`${plan.id}-break-${row.start}`} className="bg-amber-500/10">
+                            <tr
+                              key={`${plan.id}-break-${row.start}`}
+                              className="bg-amber-500/10"
+                            >
                               <td className="border-b border-r px-3 py-2 text-xs font-semibold text-amber-700 dark:text-amber-400">
                                 {row.start} - {row.end}
                               </td>
@@ -424,7 +431,8 @@ export default function TimetableGeneratorClient({ initialPlans }) {
                             </td>
                             {DAY_HEADERS.map((day) => {
                               const matches = sortEntries(plan.entries).filter(
-                                (entry) => entry.day === day.key && overlaps(entry, row),
+                                (entry) =>
+                                  entry.day === day.key && overlaps(entry, row),
                               );
                               const first = matches[0];
 
@@ -440,11 +448,15 @@ export default function TimetableGeneratorClient({ initialPlans }) {
                                       </p>
                                       <p className="text-[11px] text-muted-foreground">
                                         {first.entryType}
-                                        {first.classroom ? ` • Room ${first.classroom}` : ""}
+                                        {first.classroom
+                                          ? ` • Room ${first.classroom}`
+                                          : ""}
                                       </p>
                                     </div>
                                   ) : (
-                                    <span className="text-[11px] text-muted-foreground">-</span>
+                                    <span className="text-[11px] text-muted-foreground">
+                                      -
+                                    </span>
                                   )}
                                 </td>
                               );
@@ -457,7 +469,9 @@ export default function TimetableGeneratorClient({ initialPlans }) {
                 </div>
 
                 <div className="mt-4 space-y-3">
-                  <h4 className="text-sm font-semibold">Classroom Assignment & Publish</h4>
+                  <h4 className="text-sm font-semibold">
+                    Classroom Assignment & Publish
+                  </h4>
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -483,7 +497,9 @@ export default function TimetableGeneratorClient({ initialPlans }) {
                                 className="max-w-[140px]"
                                 placeholder="Room"
                                 value={
-                                  roomAssignmentsByPlanId?.[plan.id]?.[entry.id] ??
+                                  roomAssignmentsByPlanId?.[plan.id]?.[
+                                    entry.id
+                                  ] ??
                                   entry.classroom ??
                                   ""
                                 }
@@ -492,7 +508,7 @@ export default function TimetableGeneratorClient({ initialPlans }) {
                                 }
                               />
                             ) : (
-                              entry.classroom ?? "-"
+                              (entry.classroom ?? "-")
                             )}
                           </TableCell>
                         </TableRow>
@@ -503,7 +519,9 @@ export default function TimetableGeneratorClient({ initialPlans }) {
                   {plan.status === "DRAFT" && (
                     <div className="flex flex-wrap items-end gap-3">
                       <div className="grid gap-1">
-                        <Label htmlFor={`effective-${plan.id}`}>Effective From</Label>
+                        <Label htmlFor={`effective-${plan.id}`}>
+                          Effective From
+                        </Label>
                         <Input
                           id={`effective-${plan.id}`}
                           type="date"
@@ -516,7 +534,10 @@ export default function TimetableGeneratorClient({ initialPlans }) {
                           }
                         />
                       </div>
-                      <Button disabled={isPending} onClick={() => onPublish(plan)}>
+                      <Button
+                        disabled={isPending}
+                        onClick={() => onPublish(plan)}
+                      >
                         Publish Official Timetable
                       </Button>
                     </div>
