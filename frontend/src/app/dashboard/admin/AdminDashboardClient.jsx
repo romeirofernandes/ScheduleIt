@@ -35,6 +35,8 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
+  CardContent,
+  CardFooter,
 } from "@/components/ui/card";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { 
