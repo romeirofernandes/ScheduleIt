@@ -1,16 +1,17 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { isStaff, canWriteSchedule } from "@/lib/permissions";
 import AdminDashboardClient from "./AdminDashboardClient";
 
 export default async function AdminDashboard() {
   const session = await auth();
 
   if (!session?.user) {
-    redirect("/login");
+    redirect("/signin");
   }
 
-  if (session.user.role !== "ADMIN") {
+  if (!isStaff(session.user.role)) {
     redirect("/dashboard/student");
   }
 
@@ -18,6 +19,8 @@ export default async function AdminDashboard() {
   const labAllocations = await prisma.labAllocation.findMany({
     orderBy: { createdAt: "desc" },
   });
+
+  const canWrite = canWriteSchedule(session.user.role);
 
   return (
     <main className="min-h-screen bg-background">
@@ -28,12 +31,17 @@ export default async function AdminDashboard() {
               Admin Dashboard
             </h1>
             <p className="text-muted-foreground mt-2 text-lg">
-              Manage lab allocations and schedules.
+              {canWrite
+                ? "Manage lab allocations and schedules."
+                : "View lab allocations and schedules."}
             </p>
           </div>
         </header>
 
-        <AdminDashboardClient initialLabAllocations={labAllocations} />
+        <AdminDashboardClient
+          initialLabAllocations={labAllocations}
+          canWrite={canWrite}
+        />
       </div>
     </main>
   );

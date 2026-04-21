@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { isStaff } from "@/lib/permissions";
 
 import { StudentSidebar } from "@/components/student/StudentSidebar";
 import { DashboardBreadcrumb } from "@/components/shared/DashboardBreadcrumb";
@@ -13,10 +14,11 @@ export default async function StudentLayout({ children }) {
   const session = await auth();
 
   if (!session?.user) {
-    redirect("/login");
+    redirect("/signin");
   }
 
-  if (session.user.role === "ADMIN") {
+  // Any staff member who ends up here gets redirected to the admin area
+  if (isStaff(session.user.role)) {
     redirect("/dashboard/admin");
   }
 
@@ -25,6 +27,7 @@ export default async function StudentLayout({ children }) {
       <StudentSidebar
         userName={session.user.name}
         studentClass={session.user.studentClass}
+        isCR={session.user.isCR}
       />
       <SidebarInset className="overflow-hidden rounded-xl md:rounded-2xl">
         <header className="sticky top-0 z-20 flex h-14 items-center gap-2 border-b bg-background/95 px-4 backdrop-blur supports-backdrop-filter:bg-background/60">

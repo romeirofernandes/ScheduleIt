@@ -10,7 +10,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     strategy: "jwt",
   },
   pages: {
-    signIn: "/login",
+    signIn: "/signin",
   },
   providers: [
     Credentials({
@@ -72,6 +72,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           mobNumber: user.mobNumber,
           role: user.role,
           studentClass: user.studentClass,
+          isCR: user.isCR,
+          assignedClass: user.assignedClass,
         };
       },
     }),
@@ -84,6 +86,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.mobNumber = user.mobNumber;
         token.role = user.role;
         token.studentClass = user.studentClass;
+        token.isCR = user.isCR;
+        token.assignedClass = user.assignedClass;
       }
 
       return token;
@@ -95,6 +99,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.mobNumber = token.mobNumber;
         session.user.role = token.role;
         session.user.studentClass = token.studentClass;
+        session.user.isCR = token.isCR;
+        session.user.assignedClass = token.assignedClass;
       }
 
       return session;

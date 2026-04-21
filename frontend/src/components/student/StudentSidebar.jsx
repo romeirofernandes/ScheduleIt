@@ -30,6 +30,7 @@ import {
   Calendar01Icon,
   Logout01Icon,
   Moon02Icon,
+  StarIcon,
   Sun03Icon,
   TimeQuarter02Icon,
 } from "@hugeicons/core-free-icons";
@@ -47,7 +48,7 @@ const navigationGroups = [
   },
 ];
 
-export function StudentSidebar({ userName, studentClass }) {
+export function StudentSidebar({ userName, studentClass, isCR }) {
   const pathname = usePathname();
   const { resolvedTheme, setTheme } = useTheme();
   const { state } = useSidebar();
@@ -100,7 +101,11 @@ export function StudentSidebar({ userName, studentClass }) {
                     <SidebarMenuButton
                       render={<Link href={item.href} />}
                       tooltip={item.title}
-                      isActive={item.href === "/dashboard/student" ? pathname.startsWith(item.href) : pathname === item.href}
+                      isActive={
+                        item.href === "/dashboard/student"
+                          ? pathname.startsWith(item.href)
+                          : pathname === item.href
+                      }
                     >
                       <HugeiconsIcon icon={item.icon} strokeWidth={2} />
                       <span>{item.title}</span>
@@ -116,8 +121,21 @@ export function StudentSidebar({ userName, studentClass }) {
           <SidebarGroupLabel>Profile</SidebarGroupLabel>
           <SidebarGroupContent>
             <div className="rounded-lg border border-sidebar-border bg-sidebar-accent p-3 group-data-[collapsible=icon]:hidden">
-              <p className="truncate text-sm font-medium text-sidebar-foreground">{userName || "Student"}</p>
-              <p className="mt-1 text-xs text-sidebar-foreground/70">Class {studentClass || "FE"}</p>
+              <p className="truncate text-sm font-medium text-sidebar-foreground">
+                {userName || "Student"}
+              </p>
+              <p className="mt-1 text-xs text-sidebar-foreground/70">
+                Class {studentClass || "FE"}
+              </p>
+
+              {/* CR badge — only rendered when the student is a class representative */}
+              {isCR && (
+                <p className="mt-2 inline-flex items-center gap-1 rounded-md bg-amber-500/15 px-2 py-0.5 text-xs font-semibold text-amber-600 dark:text-amber-400">
+                  <HugeiconsIcon icon={StarIcon} size={12} strokeWidth={2} />
+                  Class Representative
+                </p>
+              )}
+
               <p className="mt-2 inline-flex items-center gap-1 text-xs text-sidebar-foreground/80">
                 <HugeiconsIcon icon={TimeQuarter02Icon} strokeWidth={2} />
                 Weekly timetable

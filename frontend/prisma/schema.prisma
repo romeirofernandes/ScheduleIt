@@ -12,7 +12,11 @@ datasource db {
 }
 
 enum Role {
+  SUPER_ADMIN
   ADMIN
+  TIMETABLE_SETTER
+  CLASS_TEACHER
+  NORMAL_TEACHER
   STUDENT
 }
 
@@ -24,15 +28,20 @@ enum StudentClass {
 }
 
 model User {
-  id           String        @id @default(cuid())
-  username     String        @unique
-  email        String        @unique
-  mobNumber    String        @unique
-  passwordHash String
-  role         Role          @default(STUDENT)
-  studentClass StudentClass?
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  id            String        @id @default(cuid())
+  username      String        @unique
+  email         String        @unique
+  mobNumber     String        @unique
+  passwordHash  String
+  role          Role          @default(STUDENT)
+  // For STUDENT: which class they belong to
+  studentClass  StudentClass?
+  // For STUDENT: is this student a class representative?
+  isCR          Boolean       @default(false)
+  // For CLASS_TEACHER: which class are they the class teacher for?
+  assignedClass StudentClass?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 }
 
 model LabAllocation {

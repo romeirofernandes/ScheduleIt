@@ -86,7 +86,7 @@ export async function signupAction(_prevState, formData) {
     await signIn("credentials", {
       identifier: email,
       password,
-      redirectTo: "/",
+      redirectTo: "/dashboard",
     });
 
     return {

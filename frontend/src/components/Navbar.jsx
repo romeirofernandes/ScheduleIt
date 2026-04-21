@@ -17,14 +17,17 @@ export default function Navbar() {
   const { status } = useSession();
   const [scrolled, setScrolled] = useState(false);
 
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
+    setMounted(true);
     const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const isDark = resolvedTheme === "dark";
+  const isDark = mounted && resolvedTheme === "dark";
 
   const handleBrandClick = (event) => {
     event.preventDefault();
@@ -68,13 +71,17 @@ export default function Navbar() {
                 variant="secondary"
                 size="sm"
                 className="h-8 w-8 p-0"
-                onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+                onClick={() => setTheme(isDark ? "light" : "dark")}
                 aria-label="Toggle theme"
               >
-                {resolvedTheme === "dark" ? (
-                  <HugeiconsIcon icon={Sun03Icon} size={16} strokeWidth={1.8} />
+                {mounted ? (
+                  isDark ? (
+                    <HugeiconsIcon icon={Sun03Icon} size={16} strokeWidth={1.8} />
+                  ) : (
+                    <HugeiconsIcon icon={Moon02Icon} size={16} strokeWidth={1.8} />
+                  )
                 ) : (
-                  <HugeiconsIcon icon={Moon02Icon} size={16} strokeWidth={1.8} />
+                  <span className="inline-block size-4" />
                 )}
               </Button>
 
