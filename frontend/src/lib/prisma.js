@@ -26,7 +26,9 @@ const pool = globalForPrisma.prismaPool ?? new Pool(poolConfig);
 const cachedClient = globalForPrisma.prisma;
 
 const prismaClient =
-  cachedClient && typeof cachedClient.classroomAccessRequest !== "undefined"
+  cachedClient && 
+  typeof cachedClient.classroomAccessRequest !== "undefined" &&
+  typeof cachedClient.timetablePlan !== "undefined"
     ? cachedClient
     : new PrismaClient({
         adapter: new PrismaPg(pool),
