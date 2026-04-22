@@ -1,6 +1,6 @@
 # ScheduleIt Frontend
 
-Next.js 16 frontend for ScheduleIt, a campus resource booking platform.
+Next.js 16 frontend for ScheduleIt, a campus resource booking platform
 
 ## Stack
 
