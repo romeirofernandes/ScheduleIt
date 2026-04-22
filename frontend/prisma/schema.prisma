@@ -50,6 +50,8 @@ model User {
   id                        String                   @id @default(cuid())
   username                  String                   @unique
   email                     String                   @unique
+  notificationEmail         String?
+  notificationEnabled       Boolean                  @default(true)
   mobNumber                 String                   @unique
   passwordHash              String
   role                      Role                     @default(STUDENT)

@@ -29,6 +29,7 @@ import {
   BookOpen01Icon,
   Calendar01Icon,
   Logout01Icon,
+  Mail01Icon,
   Moon02Icon,
   StarIcon,
   Sun03Icon,
@@ -45,6 +46,11 @@ function buildNavigationGroups(isCR) {
           title: "Schedule",
           href: "/dashboard/student",
           icon: BookOpen01Icon,
+        },
+        {
+          title: "Notifications",
+          href: "/dashboard/student/notifications",
+          icon: Mail01Icon,
         },
       ],
     },
@@ -122,11 +128,7 @@ export function StudentSidebar({ userName, studentClass, isCR }) {
                     <SidebarMenuButton
                       render={<Link href={item.href} />}
                       tooltip={item.title}
-                      isActive={
-                        item.href === "/dashboard/student"
-                          ? pathname.startsWith(item.href)
-                          : pathname === item.href
-                      }
+                      isActive={pathname === item.href}
                     >
                       <HugeiconsIcon icon={item.icon} strokeWidth={2} />
                       <span>{item.title}</span>
