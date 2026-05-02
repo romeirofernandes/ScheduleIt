@@ -4,31 +4,27 @@ import Image from 'next/image';
 const members = [
   {
     name: 'Romeiro Fernandes',
-    role: 'UX Engineer',
-    avatar:
-      'https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?q=80&w=1200&auto=format&fit=crop',
-    link: '#',
+    role: 'Full Stack Developer',
+    avatar: '/romeiro.webp',
+    link: 'https://romeirofernandes.tech',
   },
   {
     name: 'Aliqyaan Mahimwala',
-    role: 'Sales Manager',
-    avatar:
-      'https://images.unsplash.com/photo-1633625763717-045645e9e739?q=80&w=1200&auto=format&fit=crop',
-    link: '#',
+    role: 'Full Stack Developer',
+    avatar: '/aliqyaan.webp',
+    link: 'https://aliqyaanmahimwala.vercel.app',
   },
   {
     name: 'Reniyas Nadar',
-    role: 'Founder - CEO',
-    avatar:
-      'https://images.unsplash.com/photo-1758922584983-82ffd5720c6a?q=80&w=1200&auto=format&fit=crop',
-    link: '#',
+    role: 'Full Stack Developer',
+    avatar: '/reniyas.webp',
+    link: 'https://reniyasnadar.vercel.app',
   },
   {
     name: 'Chris Lopes',
-    role: 'Visual Designer',
-    avatar:
-      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1200&auto=format&fit=crop',
-    link: '#',
+    role: 'Full Stack Developer',
+    avatar: '/chris.webp',
+    link: 'https://github.com/Chris-Lopes',
   },
 ];
 
@@ -53,6 +49,7 @@ export default function TeamSection() {
           {members.map((member, index) => (
             <div key={member.name} className="group overflow-hidden">
               <Image
+                unoptimized
                 className="h-96 w-full rounded-md object-cover object-top grayscale outline-1 -outline-offset-1 outline-black/10 transition-[height,border-radius,filter] duration-500 hover:grayscale-0 group-hover:h-[22.5rem] group-hover:rounded-xl"
                 src={member.avatar}
                 alt={member.name}
@@ -73,6 +70,8 @@ export default function TeamSection() {
                   </span>
                   <Link
                     href={member.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-block translate-y-8 text-sm tracking-wide opacity-0 transition-[opacity,transform,color] duration-500 hover:underline group-hover:translate-y-0 group-hover:opacity-100"
                   >
                     Profile
