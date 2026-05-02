@@ -14,7 +14,11 @@ import {
   CalendarProvider,
   CalendarYearPicker,
 } from '@/components/Calendar';
+import { useCalendar } from '@/components/Calendar';
 import { motion } from 'motion/react';
+import { useRouter } from 'next/navigation';
+import { getDaysInMonth } from 'date-fns';
+import { useMemo } from 'react';
  
 
 const STATUSES = [
@@ -75,6 +79,30 @@ const headingLine = {
 };
 
 export default function HeroSection() {
+  const router = useRouter();
+  const { month, year } = useCalendar();
+
+  const features = useMemo(() => {
+    const daysInMonth = getDaysInMonth(new Date(year, month, 1));
+    const result = [];
+    let id = 1;
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = new Date(year, month, day);
+      const dayOfWeek = date.getDay();
+      if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+        const eventIndex = (day - 1) % demoFeatures.length;
+        result.push({
+          ...demoFeatures[eventIndex],
+          id: String(id++),
+          startAt: date,
+          endAt: date,
+        });
+      }
+    }
+    return result;
+  }, [month, year]);
+
   return (
     <section className="relative flex min-h-svh flex-col overflow-hidden">
       <Navbar />
@@ -113,7 +141,9 @@ export default function HeroSection() {
 
             {/* CTA Buttons */}
             <div className="flex flex-wrap items-center gap-3 pt-1">
-              <Button size="lg">Get Started Free</Button>
+              <Button size="lg" onClick={() => router.push('/signup')}>
+                Get Started
+              </Button>
               <Button 
                 variant="secondary" 
                 size="lg"
@@ -138,7 +168,7 @@ export default function HeroSection() {
                   <CalendarDatePagination />
                 </CalendarDate>
                 <CalendarHeader />
-                <CalendarBody features={demoFeatures}>
+                <CalendarBody features={features}>
                   {({ feature }) => <CalendarItem feature={feature} />}
                 </CalendarBody>
                 <CalendarLegend statuses={STATUSES} />

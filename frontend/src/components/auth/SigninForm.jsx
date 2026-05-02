@@ -34,7 +34,7 @@ export function SigninForm() {
       <div className="space-y-2">
         <label
           htmlFor="identifier"
-          className="text-sm font-medium text-foreground/90"
+          className="text-sm font-medium text-foreground/90 mb-1"
         >
           Username or Email
         </label>
@@ -56,7 +56,7 @@ export function SigninForm() {
       <div className="space-y-2">
         <label
           htmlFor="password"
-          className="text-sm font-medium text-foreground/90"
+          className="text-sm font-medium text-foreground/90 mb-1"
         >
           Password
         </label>

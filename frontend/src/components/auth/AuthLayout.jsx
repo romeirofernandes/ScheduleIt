@@ -9,6 +9,7 @@ import { Moon02Icon, Sun03Icon } from "@hugeicons/core-free-icons";
 import LandingBackground from "@/components/LandingBackground";
 import { Button } from "@/components/ui/button";
 import { useSyncExternalStore } from "react";
+import { toggleThemeWithViewTransition } from "@/lib/theme-transition";
 
 function ThemeToggleBtn() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -30,7 +31,7 @@ function ThemeToggleBtn() {
     <Button
       variant="secondary"
       size="icon"
-      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+      onClick={() => toggleThemeWithViewTransition(resolvedTheme, setTheme)}
     >
       {resolvedTheme === "dark" ? (
         <HugeiconsIcon icon={Sun03Icon} size={16} strokeWidth={1.8} />
@@ -60,9 +61,9 @@ export function AuthLayout({ children, title, subtitle }) {
         <ThemeToggleBtn />
       </div>
 
-      <div className="relative z-10 w-full max-w-sm">
-        <div className="rounded-xl border border-border bg-card p-6 shadow-sm sm:p-8">
-          <div className="relative mx-auto flex w-full flex-col justify-between gap-y-6 border-y px-4 py-12">
+      <div className="relative z-10 w-full max-w-md">
+        <div className="rounded-xl border border-border bg-card p-8 shadow-sm sm:p-10">
+          <div className="relative mx-auto flex w-full flex-col justify-between gap-y-6 border-y px-6 py-12">
             <PlusIcon className="absolute left-[-11.5px] top-[-12.5px] z-10 size-6 text-muted-foreground" strokeWidth={1} />
             <PlusIcon className="absolute right-[-11.5px] top-[-12.5px] z-10 size-6 text-muted-foreground" strokeWidth={1} />
             <PlusIcon className="absolute bottom-[-12.5px] left-[-11.5px] z-10 size-6 text-muted-foreground" strokeWidth={1} />

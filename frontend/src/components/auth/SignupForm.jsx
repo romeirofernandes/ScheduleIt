@@ -43,7 +43,7 @@ export function SignupForm() {
       <div className="space-y-2">
         <label
           htmlFor="username"
-          className="text-sm font-medium text-foreground/90"
+          className="text-sm font-medium text-foreground/90 mb-1"
         >
           Username
         </label>
@@ -65,7 +65,7 @@ export function SignupForm() {
       <div className="space-y-2">
         <label
           htmlFor="email"
-          className="text-sm font-medium text-foreground/90"
+          className="text-sm font-medium text-foreground/90 mb-1"
         >
           Email
         </label>
@@ -87,7 +87,7 @@ export function SignupForm() {
       <div className="space-y-2">
         <label
           htmlFor="mobNumber"
-          className="text-sm font-medium text-foreground/90"
+          className="text-sm font-medium text-foreground/90 mb-1"
         >
           Mobile Number
         </label>
@@ -109,7 +109,7 @@ export function SignupForm() {
       <div className="space-y-2">
         <label
           htmlFor="password"
-          className="text-sm font-medium text-foreground/90"
+          className="text-sm font-medium text-foreground/90 mb-1"
         >
           Password
         </label>

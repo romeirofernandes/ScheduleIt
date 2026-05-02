@@ -7,6 +7,7 @@ import { useSyncExternalStore, useTransition } from "react";
 
 import { logoutAction } from "@/actions/auth/logout-action";
 import { cn } from "@/lib/utils";
+import { toggleThemeWithViewTransition } from "@/lib/theme-transition";
 import {
   getRoleLabel,
   canManageUsers,
@@ -196,7 +197,7 @@ export function AdminSidebar({ userName, userRole }) {
         <SidebarMenu className="gap-2">
           <SidebarMenuItem>
             <Button
-              onClick={() => setTheme(isDark ? "light" : "dark")}
+              onClick={() => toggleThemeWithViewTransition(resolvedTheme, setTheme)}
               variant="secondary"
               className="w-full"
               tooltip="Toggle theme"
