@@ -137,6 +137,28 @@ export async function createClassroomAccessRequest(formData) {
       };
     }
 
+    const overlappingRequest = await prisma.classroomAccessRequest.findFirst({
+      where: {
+        classroomName,
+        requestedDate,
+        status: {
+          not: "LOCK_REJECTED",
+        },
+        requestedStartTime: {
+          lt: requestedEndTime,
+        },
+        requestedEndTime: {
+          gt: requestedStartTime,
+        },
+      },
+    });
+
+    if (overlappingRequest) {
+      return {
+        error: "This classroom is already booked or has a pending request during the specified time.",
+      };
+    }
+
     const request = await prisma.classroomAccessRequest.create({
       data: {
         requestedById: access.session.user.id,
