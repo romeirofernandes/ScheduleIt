@@ -7,6 +7,7 @@ import { useSyncExternalStore, useTransition } from "react";
 
 import { logoutAction } from "@/actions/auth/logout-action";
 import { cn } from "@/lib/utils";
+import { toggleThemeWithViewTransition } from "@/lib/theme-transition";
 import { Button } from "@/components/ui/button";
 import {
   Sidebar,
@@ -173,7 +174,7 @@ export function StudentSidebar({ userName, studentClass, isCR }) {
         <SidebarMenu className="gap-2">
           <SidebarMenuItem>
             <Button
-              onClick={() => setTheme(isDark ? "light" : "dark")}
+              onClick={() => toggleThemeWithViewTransition(resolvedTheme, setTheme)}
               variant="secondary"
               className="w-full"
               tooltip="Toggle theme"

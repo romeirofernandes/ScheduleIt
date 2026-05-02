@@ -8,6 +8,7 @@ import { useTheme } from "next-themes";
 import GlassSurface from "@/components/GlassSurface";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { toggleThemeWithViewTransition } from "@/lib/theme-transition";
 
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Calendar01Icon, Moon02Icon, Sun03Icon } from "@hugeicons/core-free-icons";
@@ -71,7 +72,7 @@ export default function Navbar() {
                 variant="secondary"
                 size="sm"
                 className="h-8 w-8 p-0"
-                onClick={() => setTheme(isDark ? "light" : "dark")}
+                onClick={() => toggleThemeWithViewTransition(resolvedTheme, setTheme)}
                 aria-label="Toggle theme"
               >
                 {mounted ? (
@@ -103,4 +104,3 @@ export default function Navbar() {
     </header>
   );
 }
-

@@ -16,6 +16,7 @@ import {
 } from '@/components/Calendar';
 import { useCalendar } from '@/components/Calendar';
 import { motion } from 'motion/react';
+import { useRouter } from 'next/navigation';
 import { getDaysInMonth } from 'date-fns';
 import { useMemo } from 'react';
  
@@ -78,6 +79,7 @@ const headingLine = {
 };
 
 export default function HeroSection() {
+  const router = useRouter();
   const { month, year } = useCalendar();
 
   const features = useMemo(() => {
@@ -139,7 +141,9 @@ export default function HeroSection() {
 
             {/* CTA Buttons */}
             <div className="flex flex-wrap items-center gap-3 pt-1">
-              <Button size="lg">Get Started Free</Button>
+              <Button size="lg" onClick={() => router.push('/signup')}>
+                Get Started
+              </Button>
               <Button 
                 variant="secondary" 
                 size="lg"

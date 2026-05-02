@@ -258,20 +258,86 @@ function buildEmailContent({ userName, studentClass, lecture }) {
   ].join("\n");
 
   const html = `
-    <div style="font-family: Arial, sans-serif; color: #111827; line-height: 1.5;">
-      <h2 style="margin: 0 0 12px;">ScheduleIt Lecture Notification</h2>
-      <p style="margin: 0 0 12px;">Hello <strong>${userName}</strong>,</p>
-      <p style="margin: 0 0 12px;">Here is your next lecture update:</p>
-      <table style="border-collapse: collapse; width: 100%; max-width: 520px;">
-        <tr><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">Class</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;"><strong>${studentClass}</strong></td></tr>
-        <tr><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">Subject</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;"><strong>${lecture.subject}</strong></td></tr>
-        <tr><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">Type</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${lecture.entryType}</td></tr>
-        <tr><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">When</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${startSummary} (${lecture.startLabel} - ${lecture.endLabel})</td></tr>
-        <tr><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">Venue</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${lecture.venue}</td></tr>
-      </table>
-      <p style="margin: 14px 0 0;">All the best for your lecture.<br/>- ScheduleIt</p>
+  <div style="
+    background: #f4f4f5;
+    padding: 24px;
+    font-family: 'Outfit', Arial, sans-serif;
+    color: #111827;
+  ">
+    <div style="
+      max-width: 520px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+    ">
+      
+      <!-- Header -->
+      <div style="
+        background: #f97316;
+        color: #ffffff;
+        padding: 16px 20px;
+        font-weight: 600;
+        font-size: 18px;
+      ">
+        ScheduleIt
+      </div>
+
+      <!-- Body -->
+      <div style="padding: 20px;">
+        <p style="margin: 0 0 12px; font-size: 14px; color: #6b7280;">
+          Hello <strong style="color:#111827;">${userName}</strong>,
+        </p>
+
+        <p style="margin: 0 0 20px; font-size: 14px; color: #6b7280;">
+          Here is your upcoming lecture:
+        </p>
+
+        <!-- Highlight Card -->
+        <div style="
+          background: #fafafa;
+          border: 1px solid #e5e7eb;
+          border-radius: 10px;
+          padding: 16px;
+          margin-bottom: 16px;
+        ">
+          <p style="margin: 0 0 6px; font-size: 12px; color: #6b7280;">
+            SUBJECT
+          </p>
+          <p style="margin: 0; font-size: 18px; font-weight: 600;">
+            ${lecture.subject}
+          </p>
+        </div>
+
+        <!-- Details -->
+        <div style="font-size: 14px;">
+          <p style="margin: 6px 0;"><strong>Class:</strong> ${studentClass}</p>
+          <p style="margin: 6px 0;"><strong>Type:</strong> ${lecture.entryType}</p>
+          <p style="margin: 6px 0;">
+            <strong>When:</strong> ${startSummary} (${lecture.startLabel} - ${lecture.endLabel})
+          </p>
+          <p style="margin: 6px 0;"><strong>Venue:</strong> ${lecture.venue}</p>
+        </div>
+
+        <!-- Divider -->
+        <div style="
+          height: 1px;
+          background: #e5e7eb;
+          margin: 20px 0;
+        "></div>
+
+        <!-- Footer -->
+        <p style="margin: 0; font-size: 13px; color: #6b7280;">
+          All the best for your lecture.
+        </p>
+        <p style="margin: 4px 0 0; font-size: 13px; font-weight: 500;">
+          — ScheduleIt
+        </p>
+      </div>
     </div>
-  `;
+  </div>
+`;
 
   return { subject, text, html };
 }

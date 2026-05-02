@@ -1,7 +1,11 @@
+'use client';
+
 import { ArrowRightIcon, PlusIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 
 export default function CallToAction() {
+  const router = useRouter();
   return (
     <section id="cta" className="py-24 pb-16">
       <div className="mx-auto w-full max-w-6xl px-6">
@@ -24,7 +28,7 @@ export default function CallToAction() {
             </div>
 
             <div className="flex items-center justify-center gap-2">
-              <Button>
+              <Button onClick={() => router.push('/signup')}>
                 Start Now <ArrowRightIcon className="ml-1 size-4" />
               </Button>
             </div>
